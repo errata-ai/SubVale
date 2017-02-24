@@ -6,10 +6,18 @@ import sublime
 from .util.settings import Settings
 from .util import util
 
+ERROR = None
+WARNING = None
+INFO = None
+
 
 def plugin_loaded():
     """Load plugin settings.
     """
+    global ERROR, WARNING, INFO
+    ERROR = sublime.load_resource('Packages/SubVale/static/error.html')
+    WARNING = sublime.load_resource('Packages/SubVale/static/warning.html')
+    INFO = sublime.load_resource('Packages/SubVale/static/info.html')
     Settings.load()
 
 
@@ -67,11 +75,11 @@ class ValeCommand(sublime_plugin.TextCommand):
         """
         level = alert['Severity'].capitalize()
         if level == 'Error':
-            html = sublime.load_resource('Packages/Vale/static/error.html')
+            html = ERROR
         elif level == 'Warning':
-            html = sublime.load_resource('Packages/Vale/static/warning.html')
+            html = WARNING
         else:
-            html = sublime.load_resource('Packages/Vale/static/info.html')
+            html = INFO
 
         source = alert['Link']
         if source != '':
@@ -85,7 +93,7 @@ class ValeCommand(sublime_plugin.TextCommand):
             body = alert['Description']
 
         content = html.format(
-            CSS=sublime.load_resource('Packages/Vale/static/ui.css'),
+            CSS=sublime.load_resource('Packages/SubVale/static/ui.css'),
             header=header, body=body, source=source)
         return content
 

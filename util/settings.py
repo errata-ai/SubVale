@@ -15,7 +15,7 @@ class ValeSettings:
     """
     def __init__(self):
         self.supported = SUPPORTED
-        self.settings_file = 'Vale.sublime-settings'
+        self.settings_file = 'SubVale.sublime-settings'
         self.default_binary = 'vale'
         if sublime.platform() == 'windows':
             self.default_binary += '.exe'
@@ -26,9 +26,7 @@ class ValeSettings:
         """Load vale's settings.
         """
         self.settings = sublime.load_settings(self.settings_file)
-        self.prefs = sublime.load_settings(self.pref_file)
         self.settings.add_on_change('reload', lambda: self.load())
-        self.prefs.add_on_change('reload', lambda: self.load())
 
     def vale_exists(self):
         """Determine if the vale binary exists.
@@ -96,38 +94,28 @@ class ValeSettings:
         on_done = lambda path: self.set('binary', path)
         w.show_input_panel(caption, self.get('binary'), on_done, None, None)
 
-    def set(self, setting, value, pref=False):
+    def set(self, setting, value):
         """Store and save `setting` as `value`.
 
         Args:
             setting (str): The name of the setting to be accessed.
             value (str, int, bool): The value to be stored.
-            pref (bool, optional): Indicates whether `value` should be stored
-                in the settings or custom settings file.
         """
-        if pref:
-            self.prefs.set(setting, value)
-            f = self.pref_file
-        else:
-            self.settings.set(setting, value)
-            f = self.settings_file
+        self.settings.set(setting, value)
+        f = self.settings_file
         sublime.save_settings(f)
 
-    def get(self, setting, pref=False):
+    def get(self, setting):
         """Return the value associated with `setting`.
 
         Args:
             setting (str): The name of the setting to be accessed.
-            pref (bool, optional): Indicates whether `value` should be stored
-                in the settings or custom settings file.
+
         Returns:
             (str, int, bool): The value associated with `setting`. The default
                 value is None.
         """
-        if pref:
-            return self.prefs.get(setting, None)
-        else:
-            return self.settings.get(setting, None)
+        return self.settings.get(setting, None)
 
     def clear_on_hover(self):
         """
