@@ -21,12 +21,27 @@ class ValeSettings:
             self.default_binary += '.exe'
         self.settings = {}
         self.on_hover = []
+        self.error_template = None
+        self.warning_template = None
+        self.info_template = None
+        self.css
 
     def load(self):
-        """Load vale's settings.
+        """Load Vale's settings.
         """
         self.settings = sublime.load_settings(self.settings_file)
         self.settings.add_on_change('reload', lambda: self.load())
+
+    def load_resources(self):
+        """Load Vale's static resources.
+        """
+        self.error_template = sublime.load_resource(
+            'Packages/SubVale/static/error.html')
+        self.warning_template = sublime.load_resource(
+            'Packages/SubVale/static/warning.html')
+        self.info_template = sublime.load_resource(
+            'Packages/SubVale/static/info.html')
+        self.css = sublime.load_resource('Packages/SubVale/static/ui.css')
 
     def vale_exists(self):
         """Determine if the vale binary exists.
@@ -87,7 +102,7 @@ class ValeSettings:
         return json.loads(output.decode('utf-8'))
 
     def _update_binary_path(self):
-        """Update the path to the vale binary.
+        """Update the path Vale's binary.
         """
         w = sublime.active_window()
         caption = 'Path to vale: '

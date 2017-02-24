@@ -6,19 +6,12 @@ import sublime
 from .util.settings import Settings
 from .util import util
 
-ERROR = None
-WARNING = None
-INFO = None
-
 
 def plugin_loaded():
-    """Load plugin settings.
+    """Load plugin settings and resources.
     """
-    global ERROR, WARNING, INFO
-    ERROR = sublime.load_resource('Packages/SubVale/static/error.html')
-    WARNING = sublime.load_resource('Packages/SubVale/static/warning.html')
-    INFO = sublime.load_resource('Packages/SubVale/static/info.html')
     Settings.load()
+    Settings.load_resources()
 
 
 class ValeCommand(sublime_plugin.TextCommand):
@@ -65,7 +58,7 @@ class ValeCommand(sublime_plugin.TextCommand):
                     'view': self.view.id, 'level': a['Severity'],
                     'msg': a['Message']
                 })
-        self.view.add_regions('Vale-Alerts', regions,
+        self.view.add_regions('Vale Alerts', regions,
                               Settings.get('highlight_scope'),
                               Settings.get('icon'),
                               Settings.get_draw_style())
@@ -75,26 +68,25 @@ class ValeCommand(sublime_plugin.TextCommand):
         """
         level = alert['Severity'].capitalize()
         if level == 'Error':
-            html = ERROR
+            html = Settings.error_template
         elif level == 'Warning':
-            html = WARNING
+            html = Settings.warning_template
         else:
-            html = INFO
+            html = Settings.info_template
 
         source = alert['Link']
         if source != '':
             source = util.make_link(source, 'Read more ...')
 
         if alert['Description'] == '':
-            header = '{}: {}'.format(level, alert['Check'])
+            title = '{}: {}'.format(level, alert['Check'])
             body = alert['Message']
         else:
-            header = '{}: {}'.format(level, alert['Message'])
+            title = '{}: {}'.format(level, alert['Message'])
             body = alert['Description']
 
         content = html.format(
-            CSS=sublime.load_resource('Packages/SubVale/static/ui.css'),
-            header=header, body=body, source=source)
+            CSS=Settings.css, header=title, body=body, source=source)
         return content
 
 
@@ -105,7 +97,7 @@ class ValeEventListener(sublime_plugin.EventListener):
         """Clear the view of Vale's regions.
         """
         Settings.clear_on_hover()
-        view.erase_regions('Vale-Alerts')
+        view.erase_regions('Vale Alerts')
 
     def on_pre_save_async(self, view):
         """Run Vale on the entire buffer on file save.
