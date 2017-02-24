@@ -30,8 +30,5 @@
     //   2. "load_and_save": only when a file is loaded or saved.
     //   3. "save": only when a file is saved.
     //   4. "manual": only when requested.
-    "mode": "load_and_save",
-
-    // Should vale run on every save?
-    "format_on_save": true
+    "mode": "load_and_save"
 }
