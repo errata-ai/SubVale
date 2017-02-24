@@ -53,31 +53,6 @@ def run_on_temp(cmd, content, filename):
         os.remove(f.name)
 
 
-def get_is_supported(syntax_path):
-    """Determine if the current syntax is supported.
-
-    Returns:
-        (str, bool): The matching syntax if it's supported and False otherwise.
-    """
-    return any(s in syntax_path for s in Settings.supported)
-
-
-def get_syntax(syntax_path):
-    """Return the name of the current syntax.
-
-    Returns:
-        (str, None): The name of the syntax is it's supported; None otherwise.
-    """
-    if not get_is_supported(syntax_path):
-        return None
-    possible = []
-    syntax = syntax_path.split("/")[-1].split('.')[0]
-    for s in Settings.supported:
-        if all(i in syntax for i in s):
-            possible.append(s)
-    return max(possible, key=len)
-
-
 class ValeSettings:
     """Provide global access to and management of Vale's settings.
     """
@@ -100,6 +75,11 @@ class ValeSettings:
         self.settings = sublime.load_settings(self.settings_file)
         self.supported = SUPPORTED
         self.settings.add_on_change('reload', lambda: self.load())
+
+    def is_supported(self, syntax):
+        """
+        """
+        return any(s in syntax for s in self.supported)
 
     def load_resources(self):
         """Load Vale's static resources.
