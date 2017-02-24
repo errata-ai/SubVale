@@ -1,0 +1,30 @@
+{
+    // This is the path to the vale binary. If it is in your path, it should
+    // just work out-of-the-box. Otherwise, you can set the full path, which
+    // would look like this:
+    //    "binary": "/some/path/to/vale.exe"
+    "binary": "vale",
+
+    // This controls how alerts are presented:
+    //   1. "hover_status_bar": on hover, show an alert's severity and message in
+    //      the status bar.
+    //   2. "hover_popup": on hover, show an alert's info (message, description,
+    //      severity and link) in a popup.
+    "alert_location": "hover_popup",
+
+    // This controls how alerts are drawn:
+    //   1. "solid_underline": draw a solid underline below the regions.
+    //   2. "stippled_underline": draw a stippled underline below the regions.
+    //   3. "squiggly_underline": draw a squiggly underline below the regions.
+    //   4. "outlined": draw an underline around the regions.
+    "alert_style": "outlined",
+
+    // Scope used to determine the color of `alert_style`.
+    "highlight_scope": "invalid",
+
+    // The path to an icon that will be drawn in the gutter next to each alert.
+    "icon": "",
+
+    // Should vale run on every save?
+    "format_on_save": true
+}
