@@ -25,6 +25,13 @@
     // The path to an icon that will be drawn in the gutter next to each alert.
     "icon": "",
 
+    // Lint mode:
+    //   1. "background": whenever text is modified.
+    //   2. "load_and_save": only when a file is loaded or saved.
+    //   3. "save": only when a file is saved.
+    //   4. "manual": only when requested.
+    "mode": "load_and_save",
+
     // Should vale run on every save?
     "format_on_save": true
 }

@@ -14,7 +14,7 @@ class ValeSettings:
     """Provide global access to and management of Vale's settings.
     """
     def __init__(self):
-        self.supported = SUPPORTED
+        self.supported = []
         self.settings_file = 'SubVale.sublime-settings'
         self.default_binary = 'vale'
         if sublime.platform() == 'windows':
@@ -24,12 +24,13 @@ class ValeSettings:
         self.error_template = None
         self.warning_template = None
         self.info_template = None
-        self.css
+        self.css = None
 
     def load(self):
         """Load Vale's settings.
         """
         self.settings = sublime.load_settings(self.settings_file)
+        self.supported = SUPPORTED
         self.settings.add_on_change('reload', lambda: self.load())
 
     def load_resources(self):
@@ -130,7 +131,7 @@ class ValeSettings:
             (str, int, bool): The value associated with `setting`. The default
                 value is None.
         """
-        return self.settings.get(setting, None)
+        return self.settings.get(setting, '')
 
     def clear_on_hover(self):
         """
