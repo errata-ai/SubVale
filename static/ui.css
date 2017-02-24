@@ -1,14 +1,6 @@
-  html {
-  --selection-color: color(var(--background) blend(var(--bluish) 30%));
-  --header-bg: color(var(--foreground) blend(var(--background) 70%));
-  --section-bg: color(var(--background) blend(var(--foreground) 70%));
+html {
   --panel-header-bg: color(var(--background) blend(var(--foreground) 70%));
   --panel-body-bg: color(var(--background) blend(var(--foreground) 30%));
-  --btn-bg: color(var(--background) blend(var(--foreground) 50%));
-  --btn-redish: color(var(--background) blend(var(--redish) 30%));
-  --btn-orangish: color(var(--background) blend(var(--orangish) 30%));
-  --btn-bluish: color(var(--background) blend(var(--bluish) 30%));
-  --btn-greenish: color(var(--background) blend(var(--greenish) 30%));
   --font: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-mono: "sf mono", "Liberation Mono", Menlo, Courier, monospace;
   --font-size: 16px;
@@ -19,7 +11,6 @@
 }
 
 body {
-  background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font);
   font-size: var(--font-size);
@@ -28,7 +19,7 @@ body {
 }
 
 p {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0 0;
 }
 
 a {
@@ -41,48 +32,25 @@ a {
 .fg-foreground { color: var(--foreground); }
 .fg-redish     { color: var(--redish);     }
 .fg-orangish   { color: var(--orangish);   }
-.fg-yellowish  { color: var(--yellowish);  }
 .fg-greenish   { color: var(--greenish);   }
 .fg-bluish     { color: var(--bluish);     }
-.fg-purplish   { color: var(--purplish);   }
-.fg-pinkish    { color: var(--pinkish);    }
 
 .bg-background { background-color: var(--background); }
 .bg-foreground { background-color: var(--foreground); }
 .bg-redish     { background-color: var(--redish);     }
 .bg-orangish   { background-color: var(--orangish);   }
-.bg-yellowish  { background-color: var(--yellowish);  }
 .bg-greenish   { background-color: var(--greenish);   }
 .bg-bluish     { background-color: var(--bluish);     }
-.bg-purplish   { background-color: var(--purplish);   }
-.bg-pinkish    { background-color: var(--pinkish);    }
 
-.content {
- padding: var(--content-padding);
-}
-
-.header {
-  font-size: 1.25rem;
-  background-color: var(--header-bg);
-  color: var(--background);
-  padding: var(--content-padding);
-}
-
-.section {
-  font-size: 1.1rem;
-  font-weight: 400;
-  background-color: var(--section-bg);
-  padding: var(--section-padding);
-}
 
 .panel {
-  margin: 6px;
+  margin: 0;
 }
 
 .panel-header {
   background-color: var(--panel-header-bg);
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
   font-weight: 600;
   font-size: 1.1rem;
   padding: var(--section-padding);
@@ -90,8 +58,8 @@ a {
 
 .panel-body {
   background-color: var(--panel-body-bg);
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
   color: var(--background);
   padding: var(--content-padding);
 }
