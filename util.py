@@ -1,6 +1,9 @@
 import json
+import os
 import shutil
 import subprocess
+import tempfile
+import webbrowser
 
 import sublime
 
@@ -8,6 +11,71 @@ SUPPORTED = [
     'HTML', 'Markdown', 'Plain Text', 'Markdown GFM', 'reStructuredText',
     'reStructuredText Improved', 'Asciidoc', 'Asciidoc (AsciiDoctor)'
 ]
+
+
+def open_link(url):
+    """
+    """
+    webbrowser.open(url)
+
+
+def make_link(url, linkText='{url}'):
+    """Returns a link HTML string.
+    """
+    template = '<a href={url}>' + linkText + '</a>'
+    return template.format(url=url)
+
+
+def pipe_through_prog(cmd, path=None):
+    """
+    """
+    startupinfo = None
+    if sublime.platform() == 'windows':
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    p = subprocess.Popen(cmd, cwd=path, stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE,
+                         stdin=subprocess.PIPE,
+                         startupinfo=startupinfo)
+    return p.communicate()
+
+
+def run_on_temp(cmd, content, filename):
+    """
+    """
+    try:
+        _, ext = os.path.splitext(filename)
+        with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as f:
+            f.write(content)
+            f.flush()
+            return pipe_through_prog(cmd, os.path.dirname(filename))
+    finally:
+        os.remove(f.name)
+
+
+def get_is_supported(syntax_path):
+    """Determine if the current syntax is supported.
+
+    Returns:
+        (str, bool): The matching syntax if it's supported and False otherwise.
+    """
+    return any(s in syntax_path for s in Settings.supported)
+
+
+def get_syntax(syntax_path):
+    """Return the name of the current syntax.
+
+    Returns:
+        (str, None): The name of the syntax is it's supported; None otherwise.
+    """
+    if not get_is_supported(syntax_path):
+        return None
+    possible = []
+    syntax = syntax_path.split("/")[-1].split('.')[0]
+    for s in Settings.supported:
+        if all(i in syntax for i in s):
+            possible.append(s)
+    return max(possible, key=len)
 
 
 class ValeSettings:
@@ -66,7 +134,7 @@ class ValeSettings:
     def get_styles(self):
         """Get Vale's base styles.
         """
-        config = self._get_config()
+        config = self.get_config()
         return config['GBaseStyles']
 
     def get_draw_style(self):
@@ -82,24 +150,13 @@ class ValeSettings:
             return sublime.DRAW_SQUIGGLY_UNDERLINE | underlined
         return sublime.DRAW_OUTLINED
 
-    def _get_config(self):
+    def get_config(self, path):
         """Create a list of settings from the vale binary.
         """
         if not self.vale_exists():
             return {}
-
-        binary = self.get('binary')
-        startupinfo = None
-        if sublime.platform() == 'windows':
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-
-        command = [binary, 'dump-config']
-        p = subprocess.Popen(command, stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             startupinfo=startupinfo)
-        output, error = p.communicate()
-
+        command = [self.get('binary'), 'dump-config']
+        output, error = pipe_through_prog(command, path)
         return json.loads(output.decode('utf-8'))
 
     def _update_binary_path(self):
