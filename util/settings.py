@@ -11,7 +11,7 @@ SUPPORTED = [
 
 
 class ValeSettings:
-    """Provide global access to and management of Clang Format's settings.
+    """Provide global access to and management of Vale's settings.
     """
     def __init__(self):
         self.supported = SUPPORTED
@@ -87,7 +87,7 @@ class ValeSettings:
         return json.loads(output.decode('utf-8'))
 
     def _update_binary_path(self):
-        """Update the path to the Clang Format binary.
+        """Update the path to the vale binary.
         """
         w = sublime.active_window()
         caption = 'Path to vale: '
