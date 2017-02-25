@@ -198,9 +198,12 @@ class ValeEditStylesCommand(sublime_plugin.WindowCommand):
     def choose_rule(self, idx):
         """Show a list of all rules in the user-selected style.
         """
+        if idx == -1:
+            return  # The panel was cancelled.
         d = self.styles[idx]
         rules = [x for x in os.listdir(d) if x.endswith('.yml')]
-        open_rule = lambda i: self.window.open_file(os.path.join(d, rules[i]))
+        open_rule = lambda i: None if i == -1 else self.window.open_file(
+            os.path.join(d, rules[i]))
         self.window.show_quick_panel(rules, open_rule)
 
 
