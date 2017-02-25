@@ -6,8 +6,8 @@
     "binary": "vale",
 
     // This controls how alerts are presented:
-    //   1. "hover_status_bar": on hover, show an alert's severity and message in
-    //      the status bar.
+    //   1. "hover_status_bar": on hover, show an alert's severity and message
+    //      in the status bar.
     //   2. "hover_popup": on hover, show an alert's info (message, description,
     //      severity and link) in a popup.
     "alert_location": "hover_popup",
@@ -30,5 +30,11 @@
     //   2. "load_and_save": only when a file is loaded or saved.
     //   3. "save": only when a file is saved.
     //   4. "manual": only when requested.
-    "mode": "load_and_save"
+    "mode": "load_and_save",
+
+    // A list of syntaxes to run Vale on.
+    "syntaxes": [
+        "HTML", "Markdown", "Plain Text", "Markdown GFM", "reStructuredText",
+        "reStructuredText Improved", "Asciidoc", "Asciidoc (AsciiDoctor)"
+    ]
 }

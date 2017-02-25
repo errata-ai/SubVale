@@ -1,7 +1,5 @@
-import json
-
-import sublime_plugin
 import sublime
+import sublime_plugin
 
 from .util import *
 
@@ -9,8 +7,8 @@ from .util import *
 def plugin_loaded():
     """Load plugin settings and resources.
     """
-    Settings.load()
-    Settings.load_resources()
+    Settings.load(resources=True)
+    Settings.clear_on_hover()
 
 
 class ValeCommand(sublime_plugin.TextCommand):
@@ -26,7 +24,7 @@ class ValeCommand(sublime_plugin.TextCommand):
             print('The vale binary was not found.')
             return
         elif not Settings.is_supported(syntax):
-            print('Syntax not supported; skipping...')
+            print("'{0}' not supported; skipping...".format(syntax))
             return
 
         encoding = self.view.encoding()
@@ -36,11 +34,11 @@ class ValeCommand(sublime_plugin.TextCommand):
         path = self.view.file_name()
         cmd = [Settings.get('binary'), '--output=JSON', path]
         buf = self.view.substr(sublime.Region(0, self.view.size()))
-        output, error = run_on_temp(cmd, buf.encode(encoding), path)
+        output, error = run_on_temp(cmd, buf, path, encoding)
         if error:
             sublime.error_message('Vale: ' + error.decode('utf-8'))
             return
-        self.show_alerts(json.loads(output.decode(encoding)))
+        self.show_alerts(output)
 
     def show_alerts(self, data):
         """Add alert regions to the view.
@@ -54,7 +52,7 @@ class ValeCommand(sublime_plugin.TextCommand):
                 regions.append(sublime.Region(*loc))
                 Settings.on_hover.append({
                     'region': regions[-1], 'HTML': self._make_content(a),
-                    'view': self.view.id, 'level': a['Severity'],
+                    'view_id': self.view.id(), 'level': a['Severity'],
                     'msg': a['Message']
                 })
         self.view.add_regions('Vale Alerts', regions,
@@ -93,11 +91,10 @@ class ValeEventListener(sublime_plugin.EventListener):
     """Monitors events related to Vale.
     """
     def on_modified_async(self, view):
-        Settings.clear_on_hover()
-        view.erase_regions('Vale Alerts')
         if not Settings.is_supported(view.settings().get('syntax')):
             return
-        elif Settings.get('mode') == 'background':
+        Settings.clear_on_hover()
+        if Settings.get('mode') == 'background':
             print('Auto-applying Vale in background...')
             view.run_command('vale')
 
@@ -120,7 +117,8 @@ class ValeEventListener(sublime_plugin.EventListener):
             return
         loc = Settings.get('alert_location')
         for alert in Settings.on_hover:
-            if alert['view'] == view.id and alert['region'].contains(point):
+            region = alert['region']
+            if alert['view_id'] == view.id() and region.contains(point):
                 if loc == 'hover_popup':
                     view.show_popup(
                         alert['HTML'], flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
