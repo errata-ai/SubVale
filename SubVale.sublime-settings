@@ -35,6 +35,7 @@
     // A list of syntaxes to run Vale on.
     "syntaxes": [
         "HTML", "Markdown", "Plain Text", "Markdown GFM", "reStructuredText",
-        "reStructuredText Improved", "Asciidoc", "Asciidoc (AsciiDoctor)"
+        "reStructuredText Improved", "Asciidoc", "Asciidoc (AsciiDoctor)",
+        "LaTeX"
     ]
 }
