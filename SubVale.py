@@ -46,32 +46,32 @@ def run_on_temp(cmd, content, filename, encoding):
         os.remove(f.name)
 
 
-class ValeSettings:
+class ValeSettings(object):
     """Provide global access to and management of Vale's settings.
     """
     settings_file = 'SubVale.sublime-settings'
+    settings = sublime.load_settings(settings_file)
 
     def __init__(self):
         self.default_binary = 'vale'
         if sublime.platform() == 'windows':
             self.default_binary += '.exe'
-        self.settings = {}
         self.on_hover = []
         self.error_template = None
         self.warning_template = None
         self.info_template = None
         self.css = None
+        self.settings.add_on_change('reload', lambda: self.load(self))
+        self.load()
 
     def load(self, resources=False):
         """Load Vale's settings.
         """
         self.settings = sublime.load_settings(self.settings_file)
-        self.settings.add_on_change('reload', lambda: self.load())
-        if resources:
-            self.__load_resources()
+        self.__load_resources()
 
     def is_supported(self, syntax):
-        """Determine if `syntax` has been specified in the settings..
+        """Determine if `syntax` has been specified in the settings.
         """
         supported = self.get('syntaxes')
         return any(s.lower() in syntax.lower() for s in supported)
@@ -163,12 +163,12 @@ class ValeSettings:
         """Load Vale's static resources.
         """
         self.error_template = sublime.load_resource(
-            'Packages/SubVale/static/error.html')
+            self.settings.get('error_HTML'))
         self.warning_template = sublime.load_resource(
-            'Packages/SubVale/static/warning.html')
+            self.settings.get('warning_HTML'))
         self.info_template = sublime.load_resource(
-            'Packages/SubVale/static/info.html')
-        self.css = sublime.load_resource('Packages/SubVale/static/ui.css')
+            self.settings.get('info_HTML'))
+        self.css = sublime.load_resource(self.settings.get('CSS'))
 
 
 class ValeEditStylesCommand(sublime_plugin.WindowCommand):
@@ -306,7 +306,7 @@ class ValeEventListener(sublime_plugin.EventListener):
                 if loc == 'hover_popup':
                     view.show_popup(
                         alert['HTML'], flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
-                        location=point, max_width=450,
+                        location=point, max_width=Settings.get('popup_width'),
                         on_navigate=webbrowser.open)
                 elif loc == 'hover_status_bar':
                     sublime.status_message(

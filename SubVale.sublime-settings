@@ -37,5 +37,15 @@
         "HTML", "Markdown", "Plain Text", "Markdown GFM", "reStructuredText",
         "reStructuredText Improved", "Asciidoc", "Asciidoc (AsciiDoctor)",
         "LaTeX"
-    ]
+    ],
+
+    // If alert_location is set to hover_popup, how wide should the popup be?
+    "popup_width": 450,
+
+    // Styling -- HTML should include the following:
+    //    <style>{CSS}</style>
+    "info_HTML": "Packages/SubVale/static/info.html",
+    "warning_HTML": "Packages/SubVale/static/warning.html",
+    "error_HTML": "Packages/SubVale/static/warning.html",
+    "CSS": "Packages/SubVale/static/ui.css"
 }
