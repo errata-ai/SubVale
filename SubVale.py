@@ -193,11 +193,7 @@ class ValeEditStylesCommand(sublime_plugin.WindowCommand):
                 continue
             self.styles.append(style)
             styles.append(s)
-
-        if len(styles) == 1:
-            self.choose_rule(0)  # There's only one style; just show the rules.
-        else:
-            self.window.show_quick_panel(styles, self.choose_rule)
+        self.window.show_quick_panel(styles, self.choose_rule)
 
     def choose_rule(self, idx):
         """Show a list of all rules in the user-selected style.
