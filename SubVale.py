@@ -3,12 +3,15 @@ import sublime_plugin
 
 from .util import *
 
+Settings = None
+
 
 def plugin_loaded():
     """Load plugin settings and resources.
     """
+    global Settings
+    Settings = ValeSettings()
     Settings.load(resources=True)
-    Settings.clear_on_hover()
 
 
 class ValeCommand(sublime_plugin.TextCommand):
@@ -18,20 +21,19 @@ class ValeCommand(sublime_plugin.TextCommand):
         """Run vale on the user-indicated buffer.
         """
         syntax = self.view.settings().get('syntax')
+        path = self.view.file_name()
 
-        # Verify that the binary exists and that the syntax is supported.
         if not Settings.vale_exists():
-            print('The vale binary was not found.')
             return
         elif not Settings.is_supported(syntax):
-            print("'{0}' not supported; skipping...".format(syntax))
+            return
+        elif not path or self.view.is_scratch():
             return
 
         encoding = self.view.encoding()
         if encoding == 'Undefined':
             encoding = 'utf-8'
 
-        path = self.view.file_name()
         cmd = [Settings.get('binary'), '--output=JSON', path]
         buf = self.view.substr(sublime.Region(0, self.view.size()))
         output, error = run_on_temp(cmd, buf, path, encoding)
@@ -98,7 +100,7 @@ class ValeEventListener(sublime_plugin.EventListener):
             print('Auto-applying Vale in background...')
             view.run_command('vale')
 
-    def on_load_async(self, view):
+    def on_activated_async(self, view):
         if not Settings.is_supported(view.settings().get('syntax')):
             return
         elif Settings.get('mode') == 'load_and_save':

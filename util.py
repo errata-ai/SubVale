@@ -172,5 +172,3 @@ class ValeSettings:
         self.info_template = sublime.load_resource(
             'Packages/SubVale/static/info.html')
         self.css = sublime.load_resource('Packages/SubVale/static/ui.css')
-
-Settings = ValeSettings()
