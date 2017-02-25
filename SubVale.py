@@ -61,10 +61,10 @@ class ValeSettings(object):
         self.warning_template = None
         self.info_template = None
         self.css = None
-        self.settings.add_on_change('reload', lambda: self.load(self))
+        self.settings.add_on_change('reload', lambda: self.load())
         self.load()
 
-    def load(self, resources=False):
+    def load(self):
         """Load Vale's settings.
         """
         self.settings = sublime.load_settings(self.settings_file)
@@ -172,7 +172,7 @@ class ValeSettings(object):
 
 
 class ValeEditStylesCommand(sublime_plugin.WindowCommand):
-    """
+    """Provides quick access to styles on a view-specific basis.
     """
     styles = []
 
@@ -318,4 +318,3 @@ def plugin_loaded():
     """
     global Settings
     Settings = ValeSettings()
-    Settings.load(resources=True)
