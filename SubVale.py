@@ -93,30 +93,19 @@ class ValeEventListener(sublime_plugin.EventListener):
     """Monitors events related to Vale.
     """
     def on_modified_async(self, view):
-        if not Settings.is_supported(view.settings().get('syntax')):
-            return
         Settings.clear_on_hover()
         if Settings.get('mode') == 'background':
-            print('Auto-applying Vale in background...')
             view.run_command('vale')
 
     def on_activated_async(self, view):
-        if not Settings.is_supported(view.settings().get('syntax')):
-            return
-        elif Settings.get('mode') == 'load_and_save':
-            print('Auto-applying Vale on load...')
+        if Settings.get('mode') == 'load_and_save':
             view.run_command('vale')
 
     def on_pre_save_async(self, view):
-        if not Settings.is_supported(view.settings().get('syntax')):
-            return
-        elif Settings.get('mode') in ('load_and_save', 'save'):
-            print('Auto-applying Vale on save...')
+        if Settings.get('mode') in ('load_and_save', 'save'):
             view.run_command('vale')
 
     def on_hover(self, view, point, hover_zone):
-        if not Settings.is_supported(view.settings().get('syntax')):
-            return
         loc = Settings.get('alert_location')
         for alert in Settings.on_hover:
             region = alert['region']
