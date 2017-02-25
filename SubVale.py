@@ -174,7 +174,38 @@ class ValeSettings:
 class ValeEditStylesCommand(sublime_plugin.WindowCommand):
     """
     """
-    pass
+    styles = []
+
+    def run(self):
+        """Show a list of all styles applied to the active view.
+        """
+        styles_dir = os.path.dirname(self.window.active_view().file_name())
+        config = Settings.get_config(path=styles_dir)
+        path = config['StylesPath']
+        if not path or not os.path.exists(path):
+            sublime.error_message('SubVale: invalid path!')
+            return
+
+        styles = []
+        for s in os.listdir(path):
+            style = os.path.join(path, s)
+            if not os.path.isdir(style):
+                continue
+            self.styles.append(style)
+            styles.append(s)
+
+        if len(styles) == 1:
+            self.choose_rule(0)  # There's only one style; just show the rules.
+        else:
+            self.window.show_quick_panel(styles, self.choose_rule)
+
+    def choose_rule(self, idx):
+        """Show a list of all rules in the user-selected style.
+        """
+        d = self.styles[idx]
+        rules = [x for x in os.listdir(d) if x.endswith('.yml')]
+        open_rule = lambda i: self.window.open_file(os.path.join(d, rules[i]))
+        self.window.show_quick_panel(rules, open_rule)
 
 
 class ValeCommand(sublime_plugin.TextCommand):
@@ -281,6 +312,7 @@ class ValeEventListener(sublime_plugin.EventListener):
                 elif loc == 'hover_status_bar':
                     sublime.status_message(
                         'vale:{0}:{1}'.format(alert['level'], alert['msg']))
+
 
 def plugin_loaded():
     """Load plugin settings and resources.

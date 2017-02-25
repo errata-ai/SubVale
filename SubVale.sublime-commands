@@ -1,3 +1,4 @@
 [
     { "caption": "SubVale: Lint View", "command": "vale"},
+    { "caption": "SubVale: Edit Styles", "command": "vale_edit_styles"}
 ]
