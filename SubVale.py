@@ -1,6 +1,5 @@
 import json
 import os
-import shutil
 import subprocess
 import tempfile
 import webbrowser
@@ -100,21 +99,8 @@ class ValeSettings(object):
 
     def vale_exists(self):
         """Determine if the Vale binary exists.
-
-        Returns:
-            bool: True if the check was successful and False otherwise.
         """
-        msg = 'The vale binary was not found. Do you want to set a new path?'
-        # If we couldn't find the binary.
-        if shutil.which(self.get('vale_binary')) is None:
-            # Try to guess the correct setting.
-            path = shutil.which(self.default_binary)
-            if path:
-                self.set('vale_binary', path)
-            elif sublime.ok_cancel_dialog(msg):
-                self.__update_binary_path()
-            return shutil.which(self.get('vale_binary'))
-        return True
+        return os.path.exists(self.get('vale_binary'))
 
     def get_styles(self):
         """Get Vale's base styles.
@@ -172,14 +158,6 @@ class ValeSettings(object):
         for alert in self.on_hover:
             sublime.View(alert['view_id']).erase_regions('Vale Alerts')
         del self.on_hover[:]
-
-    def __update_binary_path(self):
-        """Update the path Vale's binary.
-        """
-        w = sublime.active_window()
-        caption = 'Path to vale: '
-        on_done = lambda path: self.set('vale_binary', path)
-        w.show_input_panel(caption, self.get('vale_binary'), on_done, None, None)
 
     def __load_resources(self):
         """Load Vale's static resources.
@@ -242,7 +220,7 @@ class ValeCommand(sublime_plugin.TextCommand):
             debug('binary not found!')
             return
         elif not Settings.is_supported(syntax):
-            debug('syntax "{0}" not supported!')
+            debug('syntax "{0}" not supported!'.format(syntax))
             return
         elif not path or self.view.is_scratch():
             debug('Invalid path!')
