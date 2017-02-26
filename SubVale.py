@@ -11,6 +11,28 @@ import sublime_plugin
 Settings = None
 
 
+def debug(message, prefix='SubVale', level='debug'):
+    """Console print utility.
+
+    Prints a formatted console entry to the Sublime Text console
+    if debugging is enabled in the User settings file.
+
+    Args:
+        message (string): A message to print to the console
+        prefix (string): An optional prefix
+        level (string): One of debug, info, warning, error [Default: debug]
+
+    Returns:
+        string: Issue a standard console print command.
+    """
+    if Settings.get('vale_debug'):
+        print('{prefix}: [{level}] {message}'.format(
+            message=message,
+            prefix=prefix,
+            level=level
+        ))
+
+
 def make_link(url, linkText='{url}'):
     """Returns a link HTML string.
     """
@@ -73,7 +95,7 @@ class ValeSettings(object):
     def is_supported(self, syntax):
         """Determine if `syntax` has been specified in the settings.
         """
-        supported = self.get('syntaxes')
+        supported = self.get('vale_syntaxes')
         return any(s.lower() in syntax.lower() for s in supported)
 
     def vale_exists(self):
@@ -84,14 +106,14 @@ class ValeSettings(object):
         """
         msg = 'The vale binary was not found. Do you want to set a new path?'
         # If we couldn't find the binary.
-        if shutil.which(self.get('binary')) is None:
+        if shutil.which(self.get('vale_binary')) is None:
             # Try to guess the correct setting.
             path = shutil.which(self.default_binary)
             if path:
-                self.set('binary', path)
+                self.set('vale_binary', path)
             elif sublime.ok_cancel_dialog(msg):
                 self.__update_binary_path()
-            return shutil.which(self.get('binary'))
+            return shutil.which(self.get('vale_binary'))
         return True
 
     def get_styles(self):
@@ -104,7 +126,7 @@ class ValeSettings(object):
         """Get the region styling.
         """
         underlined = sublime.DRAW_NO_FILL | sublime.DRAW_NO_OUTLINE
-        style = self.get('alert_style')
+        style = self.get('vale_alert_style')
         if style == 'solid_underline':
             return sublime.DRAW_SOLID_UNDERLINE | underlined
         elif style == 'stippled_underline':
@@ -118,7 +140,7 @@ class ValeSettings(object):
         """
         if not self.vale_exists():
             return {}
-        command = [self.get('binary'), 'dump-config']
+        command = [self.get('vale_binary'), 'dump-config']
         output, error = pipe_through_prog(command, path)
         return json.loads(output.decode('utf-8'))
 
@@ -156,19 +178,19 @@ class ValeSettings(object):
         """
         w = sublime.active_window()
         caption = 'Path to vale: '
-        on_done = lambda path: self.set('binary', path)
-        w.show_input_panel(caption, self.get('binary'), on_done, None, None)
+        on_done = lambda path: self.set('vale_binary', path)
+        w.show_input_panel(caption, self.get('vale_binary'), on_done, None, None)
 
     def __load_resources(self):
         """Load Vale's static resources.
         """
         self.error_template = sublime.load_resource(
-            self.settings.get('error_HTML'))
+            self.settings.get('vale_error_template'))
         self.warning_template = sublime.load_resource(
-            self.settings.get('warning_HTML'))
+            self.settings.get('vale_warning_template'))
         self.info_template = sublime.load_resource(
-            self.settings.get('info_HTML'))
-        self.css = sublime.load_resource(self.settings.get('CSS'))
+            self.settings.get('vale_info_template'))
+        self.css = sublime.load_resource(self.settings.get('vale_css'))
 
 
 class ValeEditStylesCommand(sublime_plugin.WindowCommand):
@@ -183,7 +205,7 @@ class ValeEditStylesCommand(sublime_plugin.WindowCommand):
         config = Settings.get_config(path=styles_dir)
         path = config['StylesPath']
         if not path or not os.path.exists(path):
-            sublime.error_message('SubVale: invalid path!')
+            debug('invalid path!')
             return
 
         styles = []
@@ -217,17 +239,20 @@ class ValeCommand(sublime_plugin.TextCommand):
         path = self.view.file_name()
 
         if not Settings.vale_exists():
+            debug('binary not found!')
             return
         elif not Settings.is_supported(syntax):
+            debug('syntax "{0}" not supported!')
             return
         elif not path or self.view.is_scratch():
+            debug('Invalid path!')
             return
 
         encoding = self.view.encoding()
         if encoding == 'Undefined':
             encoding = 'utf-8'
 
-        cmd = [Settings.get('binary'), '--output=JSON', path]
+        cmd = [Settings.get('vale_binary'), '--output=JSON', path]
         buf = self.view.substr(sublime.Region(0, self.view.size()))
         output, error = run_on_temp(cmd, buf, path, encoding)
         if error:
@@ -251,8 +276,8 @@ class ValeCommand(sublime_plugin.TextCommand):
                     'msg': a['Message']
                 })
         self.view.add_regions('Vale Alerts', regions,
-                              Settings.get('highlight_scope'),
-                              Settings.get('icon'),
+                              Settings.get('vale_highlight_scope'),
+                              Settings.get('vale_icon'),
                               Settings.get_draw_style())
 
     def _make_content(self, alert):
@@ -287,15 +312,18 @@ class ValeEventListener(sublime_plugin.EventListener):
     """
     def on_modified_async(self, view):
         Settings.clear_on_hover()
-        if Settings.get('mode') == 'background':
+        if Settings.get('vale_mode') == 'background':
+            debug('running vale on modified')
             view.run_command('vale')
 
     def on_activated_async(self, view):
-        if Settings.get('mode') == 'load_and_save':
+        if Settings.get('vale_mode') == 'load_and_save':
+            debug('running vale on activated')
             view.run_command('vale')
 
     def on_pre_save_async(self, view):
-        if Settings.get('mode') in ('load_and_save', 'save'):
+        if Settings.get('vale_mode') in ('load_and_save', 'save'):
+            debug('running vale on pre save')
             view.run_command('vale')
 
     def on_hover(self, view, point, hover_zone):
@@ -306,8 +334,8 @@ class ValeEventListener(sublime_plugin.EventListener):
                 if loc == 'hover_popup':
                     view.show_popup(
                         alert['HTML'], flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
-                        location=point, max_width=Settings.get('popup_width'),
-                        on_navigate=webbrowser.open)
+                        location=point, on_navigate=webbrowser.open,
+                        max_width=Settings.get('vale_popup_width'))
                 elif loc == 'hover_status_bar':
                     sublime.status_message(
                         'vale:{0}:{1}'.format(alert['level'], alert['msg']))

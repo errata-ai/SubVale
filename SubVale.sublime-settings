@@ -3,49 +3,51 @@
     // just work out-of-the-box. Otherwise, you can set the full path, which
     // would look like this:
     //    "binary": "/some/path/to/vale.exe"
-    "binary": "vale",
+    "vale_binary": "vale",
 
     // This controls how alerts are presented:
     //   1. "hover_status_bar": on hover, show an alert's severity and message
     //      in the status bar.
     //   2. "hover_popup": on hover, show an alert's info (message, description,
     //      severity and link) in a popup.
-    "alert_location": "hover_popup",
+    "vale_alert_location": "hover_popup",
 
     // This controls how alerts are drawn:
     //   1. "solid_underline": draw a solid underline below the regions.
     //   2. "stippled_underline": draw a stippled underline below the regions.
     //   3. "squiggly_underline": draw a squiggly underline below the regions.
     //   4. "outlined": draw an underline around the regions.
-    "alert_style": "outlined",
+    "vale_alert_style": "outlined",
 
     // Scope used to determine the color of `alert_style`.
-    "highlight_scope": "invalid",
+    "vale_highlight_scope": "invalid",
 
     // The path to an icon that will be drawn in the gutter next to each alert.
-    "icon": "",
+    "vale_icon": "",
 
     // Lint mode:
     //   1. "background": whenever text is modified.
     //   2. "load_and_save": only when a file is loaded or saved.
     //   3. "save": only when a file is saved.
     //   4. "manual": only when requested.
-    "mode": "load_and_save",
+    "vale_mode": "load_and_save",
 
     // A list of syntaxes to run Vale on.
-    "syntaxes": [
+    "vale_syntaxes": [
         "HTML", "Markdown", "Plain Text", "Markdown GFM", "reStructuredText",
         "reStructuredText Improved", "Asciidoc", "Asciidoc (AsciiDoctor)",
         "LaTeX"
     ],
 
     // If alert_location is set to hover_popup, how wide should the popup be?
-    "popup_width": 450,
+    "vale_popup_width": 450,
 
     // Styling -- HTML should include the following:
     //    <style>{CSS}</style>
-    "info_HTML": "Packages/SubVale/static/info.html",
-    "warning_HTML": "Packages/SubVale/static/warning.html",
-    "error_HTML": "Packages/SubVale/static/warning.html",
-    "CSS": "Packages/SubVale/static/ui.css"
+    "vale_info_template": "Packages/SubVale/static/info.html",
+    "vale_warning_template": "Packages/SubVale/static/warning.html",
+    "vale_error_template": "Packages/SubVale/static/warning.html",
+    "vale_css": "Packages/SubVale/static/ui.css",
+
+    "vale_debug": false,
 }
