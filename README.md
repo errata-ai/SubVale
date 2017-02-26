@@ -2,8 +2,6 @@
 
 A **Sublime Text 3** (build 3080+) plugin for [Vale][Vale-home], the customizable linter for prose.
 
-## Features
-
 ### Interactive Linting
 
 ![Preview image][preview-img]
@@ -16,7 +14,7 @@ Bring your style guide to life with detailed pop-ups or status bar messages.
 
 Easily access styles defined in your Vale config file on a per-view basis.
 
-## Installation
+## Installation (Pending Package Control approval)
 
 1. Install [Vale][Vale-install].
 2. Install [Package Control][pck-ctrl].
@@ -26,6 +24,21 @@ Easily access styles defined in your Vale config file on a per-view basis.
    and then select `SubVale` when the list appears.
 
 ## Usage
+
+The first step is to specify the location of the Vale binary in your settings file (`Preferences → Package Settings → SubVale → Settings - User`).
+
+SubVale defines two commands: 
+
+1. `vale`: runs the Vale binary on the active view.
+2. `vale_edit_styles`: shows a list of styles relevant to the active view.
+
+Both can be accessed through the Command Palette or assigned to a keybinding.
+
+## Configuration
+
+SubVale also exposes a number of [configuration options](https://github.com/jdkato/SubVale/blob/master/SubVale.sublime-settings). These include styling the in-text alerts, adding custom HTML/CSS for the popups, and listing accepted syntaxes.
+
+See the Default settings file (`Preferences → Package Settings → SubVale → Settings - Default`) for more details.
 
 [Vale-home]: https://github.com/jdkato/vale
 [Vale-install]: https://github.com/jdkato/vale/wiki
