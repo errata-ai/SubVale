@@ -11,6 +11,7 @@ html {
 }
 
 body {
+  background-color: transparent;
   color: var(--foreground);
   font-family: var(--font);
   font-size: var(--font-size);
@@ -42,15 +43,12 @@ a {
 .bg-greenish   { background-color: var(--greenish);   }
 .bg-bluish     { background-color: var(--bluish);     }
 
-
 .panel {
   margin: 0;
 }
 
 .panel-header {
   background-color: var(--panel-header-bg);
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
   font-weight: 600;
   font-size: 1.1rem;
   padding: var(--section-padding);
@@ -58,18 +56,8 @@ a {
 
 .panel-body {
   background-color: var(--panel-body-bg);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
   color: var(--background);
   padding: var(--content-padding);
-}
-
-.panel-success .panel-header {
-  background-color: color(var(--background) blend(var(--greenish) 70%));
-}
-
-.panel-success .panel-body {
-  background-color: color(var(--background) blend(var(--greenish) 30%));
 }
 
 .panel-warning .panel-header {
