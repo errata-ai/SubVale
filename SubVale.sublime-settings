@@ -46,7 +46,7 @@
     //    <style>{CSS}</style>
     "vale_info_template": "Packages/SubVale/static/info.html",
     "vale_warning_template": "Packages/SubVale/static/warning.html",
-    "vale_error_template": "Packages/SubVale/static/warning.html",
+    "vale_error_template": "Packages/SubVale/static/error.html",
     "vale_css": "Packages/SubVale/static/ui.css",
 
     "vale_debug": false,
