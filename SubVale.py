@@ -210,21 +210,22 @@ class ValeEditStylesCommand(sublime_plugin.WindowCommand):
 class ValeCommand(sublime_plugin.TextCommand):
     """Manages Vale's linting functionality.
     """
+    def is_enabled(self):
+        syntax = self.view.settings().get('syntax')
+        return Settings.is_supported(syntax)
+
     def run(self, edit):
         """Run vale on the user-indicated buffer.
         """
-        syntax = self.view.settings().get('syntax')
         path = self.view.file_name()
 
         if not Settings.vale_exists():
             debug('binary not found!')
             return
-        elif not Settings.is_supported(syntax):
-            debug('syntax "{0}" not supported!'.format(syntax))
-            return
         elif not path or self.view.is_scratch():
-            debug('Invalid path!')
+            debug('invalid path!')
             return
+        debug('running vale on {0}'.format(self.view.settings().get('syntax')))
 
         encoding = self.view.encoding()
         if encoding == 'Undefined':
@@ -288,6 +289,10 @@ class ValeCommand(sublime_plugin.TextCommand):
 class ValeEventListener(sublime_plugin.EventListener):
     """Monitors events related to Vale.
     """
+    def is_enabled(self):
+        syntax = self.view.settings().get('syntax')
+        return Settings.is_supported(syntax)
+
     def on_modified_async(self, view):
         Settings.clear_on_hover()
         if Settings.get('vale_mode') == 'background':
@@ -305,7 +310,7 @@ class ValeEventListener(sublime_plugin.EventListener):
             view.run_command('vale')
 
     def on_hover(self, view, point, hover_zone):
-        loc = Settings.get('alert_location')
+        loc = Settings.get('vale_alert_location')
         for alert in Settings.on_hover:
             region = alert['region']
             if alert['view_id'] == view.id() and region.contains(point):
