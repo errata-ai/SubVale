@@ -27,16 +27,17 @@ Easily access styles defined in your Vale config file on a per-view basis.
 
 The first step is to specify the location of the Vale binary in your settings file (`Preferences → Package Settings → SubVale → Settings - User`).
 
-SubVale defines two commands: 
+SubVale defines three commands: 
 
 1. `vale`: runs the Vale binary on the active view.
 2. `vale_edit_styles`: shows a list of styles relevant to the active view.
+3. `vale_new_rule`: shows a list of extension points and opens the associated template.
 
 Both can be accessed through the Command Palette or assigned to a keybinding.
 
 ## Configuration
 
-SubVale also exposes a number of [configuration options](https://github.com/jdkato/SubVale/blob/master/SubVale.sublime-settings). These include styling the in-text alerts, adding custom HTML/CSS for the popups, and listing accepted syntaxes.
+SubVale exposes a number of [configuration options](https://github.com/jdkato/SubVale/blob/master/SubVale.sublime-settings). These include styling the in-text alerts, adding custom HTML/CSS for the popups, and listing accepted syntaxes.
 
 See the Default settings file (`Preferences → Package Settings → SubVale → Settings - Default`) for more details.
 
