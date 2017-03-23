@@ -1,7 +1,6 @@
 import json
 import os
 import subprocess
-import tempfile
 import webbrowser
 
 import sublime
@@ -11,10 +10,7 @@ Settings = None
 
 
 def debug(message, prefix='SubVale', level='debug'):
-    """Console print utility.
-
-    Prints a formatted console entry to the Sublime Text console
-    if debugging is enabled in the User settings file.
+    """Print a formatted console entry to the Sublime Text console.
 
     Args:
         message (string): A message to print to the console
@@ -33,7 +29,7 @@ def debug(message, prefix='SubVale', level='debug'):
 
 
 def make_link(url, linkText='{url}'):
-    """Returns a link HTML string.
+    """Return a link HTML string.
     """
     template = '<a href={url}>' + linkText + '</a>'
     return template.format(url=url)
@@ -42,6 +38,7 @@ def make_link(url, linkText='{url}'):
 def pipe_through_prog(cmd, path=None):
     """Run the Vale binary with the given command.
     """
+    ret = None
     startupinfo = None
     if sublime.platform() == 'windows':
         startupinfo = subprocess.STARTUPINFO()
@@ -50,21 +47,12 @@ def pipe_through_prog(cmd, path=None):
                          stderr=subprocess.PIPE,
                          stdin=subprocess.PIPE,
                          startupinfo=startupinfo)
-    return p.communicate()
-
-
-def run_on_temp(cmd, content, filename, encoding):
-    """Create a named temporary file and run Vale on it.
-    """
+    out, err = p.communicate()
     try:
-        _, ext = os.path.splitext(filename)
-        with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as f:
-            f.write(content.encode('utf-8'))
-            f.flush()
-            out, err = pipe_through_prog(cmd, os.path.dirname(filename))
-            return json.loads(out.decode('utf-8')), err
-    finally:
-        os.remove(f.name)
+        ret = json.loads(out.decode('utf-8'))
+    except ValueError as e:
+        err = str(e)
+    return ret, err
 
 
 class ValeSettings(object):
@@ -130,7 +118,7 @@ class ValeSettings(object):
         output, error = pipe_through_prog(command, path)
         return json.loads(output.decode('utf-8'))
 
-    def set(self, setting, value):
+    def put(self, setting, value):
         """Store and save `setting` as `value`.
 
         Args:
@@ -232,10 +220,9 @@ class ValeCommand(sublime_plugin.TextCommand):
             encoding = 'utf-8'
 
         cmd = [Settings.get('vale_binary'), '--output=JSON', path]
-        buf = self.view.substr(sublime.Region(0, self.view.size()))
-        output, error = run_on_temp(cmd, buf, path, encoding)
+        output, error = pipe_through_prog(cmd, os.path.dirname(path))
         if error:
-            sublime.error_message('Vale: ' + error.decode('utf-8'))
+            debug(error)
             return
         self.show_alerts(output)
 
