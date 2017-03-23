@@ -1,6 +1,6 @@
 # SubVale
 
-A **Sublime Text 3** (build 3080+) plugin for [Vale][Vale-home], the customizable linter for prose.
+A **Sublime Text 3** (build 3080+) package for [Vale][Vale-home], the customizable linter for prose.
 
 ### Interactive Linting
 
@@ -8,11 +8,11 @@ A **Sublime Text 3** (build 3080+) plugin for [Vale][Vale-home], the customizabl
 
 Bring your style guide to life with detailed pop-ups or status bar messages.
 
-### Style Management
+### Style & Rule Management
 
 ![Demo GIF][demo-gif]
 
-Easily access styles defined in your Vale config file on a per-view basis.
+Easily access styles defined in your Vale configuration file on a per-view basis.
 
 ## Installation (Pending Package Control approval)
 
@@ -33,11 +33,11 @@ SubVale defines three commands:
 2. `vale_edit_styles`: shows a list of styles relevant to the active view.
 3. `vale_new_rule`: shows a list of extension points and opens the associated template.
 
-Both can be accessed through the Command Palette or assigned to a keybinding.
+All three can be accessed through the Command Palette or assigned to a key binding.
 
 ## Configuration
 
-SubVale exposes a number of [configuration options](https://github.com/jdkato/SubVale/blob/master/SubVale.sublime-settings). These include styling the in-text alerts, adding custom HTML/CSS for the popups, and listing accepted syntaxes.
+SubVale exposes a number of [configuration options](https://github.com/jdkato/SubVale/blob/master/SubVale.sublime-settings). These include styling the in-text alerts, adding custom HTML/CSS for the pop-ups, and listing accepted syntaxes.
 
 See the Default settings file (`Preferences → Package Settings → SubVale → Settings - Default`) for more details.
 
