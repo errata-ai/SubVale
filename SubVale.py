@@ -13,12 +13,12 @@ def debug(message, prefix='SubVale', level='debug'):
     """Print a formatted console entry to the Sublime Text console.
 
     Args:
-        message (string): A message to print to the console
-        prefix (string): An optional prefix
-        level (string): One of debug, info, warning, error [Default: debug]
+        message (str): A message to print to the console
+        prefix (str): An optional prefix
+        level (str): One of debug, info, warning, error [Default: debug]
 
     Returns:
-        string: Issue a standard console print command.
+        str: Issue a standard console print command.
     """
     if Settings.get('vale_debug'):
         print('{prefix}: [{level}] {message}'.format(
@@ -211,19 +211,16 @@ class ValeCommand(sublime_plugin.TextCommand):
             debug('binary not found!')
             return
         elif not path or self.view.is_scratch():
-            debug('invalid path!')
+            debug('invalid path: {0}!'.format(path))
             return
+
         debug('running vale on {0}'.format(self.view.settings().get('syntax')))
-
-        encoding = self.view.encoding()
-        if encoding == 'Undefined':
-            encoding = 'utf-8'
-
         cmd = [Settings.get('vale_binary'), '--output=JSON', path]
         output, error = pipe_through_prog(cmd, os.path.dirname(path))
         if error:
             debug(error)
             return
+
         self.show_alerts(output)
 
     def show_alerts(self, data):
