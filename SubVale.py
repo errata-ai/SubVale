@@ -38,7 +38,6 @@ def make_link(url, linkText='{url}'):
 def pipe_through_prog(cmd, path=None):
     """Run the Vale binary with the given command.
     """
-    ret = None
     startupinfo = None
     if sublime.platform() == 'windows':
         startupinfo = subprocess.STARTUPINFO()
@@ -48,11 +47,7 @@ def pipe_through_prog(cmd, path=None):
                          stdin=subprocess.PIPE,
                          startupinfo=startupinfo)
     out, err = p.communicate()
-    try:
-        ret = json.loads(out.decode('utf-8'))
-    except ValueError as e:
-        err = str(e)
-    return ret, err
+    return out.decode('utf-8'), err
 
 
 class ValeSettings(object):
@@ -159,10 +154,40 @@ class ValeSettings(object):
         self.css = sublime.load_resource(self.settings.get('vale_css'))
 
 
+class ValeInsertTemplateCommand(sublime_plugin.TextCommand):
+    """Retrieve and insert a template based on the given extension point.
+    """
+    def run(self, edit, **args):
+        point = args['point']
+        temp = pipe_through_prog([Settings.get('vale_binary'), 'new', point])
+        v = self.view.window().new_file()
+        v.insert(edit, 0, temp[0])
+
+
+class ValeNewRuleCommand(sublime_plugin.WindowCommand):
+    """Shows a list of extension points and inserts the associated template.
+    """
+    extension_points = ['existence', 'substitution']  # TODO: add the others...
+
+    def run(self):
+        self.window.show_quick_panel(self.extension_points, self.choose)
+
+    def choose(self, idx):
+        if idx == -1:
+            return  # The panel was cancelled.
+        self.window.run_command("vale_insert_template", {
+            'point': self.extension_points[idx]
+        })
+
+
 class ValeEditStylesCommand(sublime_plugin.WindowCommand):
     """Provides quick access to styles on a view-specific basis.
     """
     styles = []
+
+    def is_enabled(self):
+        syntax = self.view.settings().get('syntax')
+        return Settings.is_supported(syntax)
 
     def run(self):
         """Show a list of all styles applied to the active view.
@@ -217,8 +242,11 @@ class ValeCommand(sublime_plugin.TextCommand):
         debug('running vale on {0}'.format(self.view.settings().get('syntax')))
         cmd = [Settings.get('vale_binary'), '--output=JSON', path]
         output, error = pipe_through_prog(cmd, os.path.dirname(path))
-        if error:
-            debug(error)
+
+        try:
+            output = json.loads(output)
+        except ValueError as e:
+            debug(str(e))
             return
 
         self.show_alerts(output)
