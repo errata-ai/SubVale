@@ -185,10 +185,6 @@ class ValeEditStylesCommand(sublime_plugin.WindowCommand):
     """
     styles = []
 
-    def is_enabled(self):
-        syntax = self.view.settings().get('syntax')
-        return Settings.is_supported(syntax)
-
     def run(self):
         """Show a list of all styles applied to the active view.
         """
