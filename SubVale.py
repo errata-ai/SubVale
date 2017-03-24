@@ -111,7 +111,7 @@ class ValeSettings(object):
             return {}
         command = [self.get('vale_binary'), 'dump-config']
         output, error = pipe_through_prog(command, path)
-        return json.loads(output.decode('utf-8'))
+        return json.loads(output)
 
     def put(self, setting, value):
         """Store and save `setting` as `value`.
