@@ -76,17 +76,17 @@
                             {
                                 "caption": "Homepage",
                                 "command": "open_url",
-                                "args": {"url": "https://github.com/jdkato/Vale"}
+                                "args": {"url": "https://github.com/ValeLint/vale"}
                             },
                             {
                                 "caption": "Documentation",
                                 "command": "open_url",
-                                "args": {"url": "https://github.com/jdkato/Vale/wiki"}
+                                "args": {"url": "https://valelint.github.io/"}
                             },
                             {
                                 "caption": "Issues",
                                 "command": "open_url",
-                                "args": {"url": "https://github.com/jdkato/Vale/issues"}
+                                "args": {"url": "https://github.com/ValeLint/SubVale/issues"}
                             }
                         ]
                     }
