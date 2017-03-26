@@ -42,8 +42,14 @@
     // If alert_location is set to hover_popup, how wide should the popup be?
     "vale_popup_width": 450,
 
-    // Styling -- HTML should include the following:
-    //    <style>{CSS}</style>
+    // Styling -- HTML should follow this basic structure:
+    //     <body id="vale-ui">
+    //       <style type="text/css">{CSS}</style>
+    //       <div class="panel panel-error">
+    //         <div class="panel-header">{header}</div>
+    //         <div class="panel-body"><p>{body} {source}</p></div>
+    //       </div>
+    //     </body>
     "vale_info_template": "Packages/SubVale/static/info.html",
     "vale_warning_template": "Packages/SubVale/static/warning.html",
     "vale_error_template": "Packages/SubVale/static/error.html",
