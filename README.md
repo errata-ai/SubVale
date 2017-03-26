@@ -41,8 +41,8 @@ SubVale exposes a number of [configuration options](https://github.com/jdkato/Su
 
 See the Default settings file (`Preferences → Package Settings → SubVale → Settings - Default`) for more details.
 
-[Vale-home]: https://github.com/jdkato/vale
-[Vale-install]: https://github.com/jdkato/vale/wiki
+[Vale-home]: https://valelint.github.io/
+[Vale-install]: https://valelint.github.io/getting-started/
 [pck-ctrl]: http://wbond.net/sublime_packages/package_control "Sublime Package Control by wbond"
 
 [preview-img]: https://cloud.githubusercontent.com/assets/8785025/23342357/b756e524-fc0d-11e6-8705-856c8a4c56f3.png
