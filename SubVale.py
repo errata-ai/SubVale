@@ -186,7 +186,10 @@ class ValeInsertTemplateCommand(sublime_plugin.TextCommand):
 class ValeNewRuleCommand(sublime_plugin.WindowCommand):
     """Shows a list of extension points and inserts the associated template.
     """
-    extension_points = ['existence', 'substitution']  # TODO: add the others...
+    extension_points = [
+        'conditional', 'consistency', 'existence', 'occurrence',
+        'repetition', 'substitution'
+    ]
 
     def run(self):
         self.window.show_quick_panel(self.extension_points, self.choose)
