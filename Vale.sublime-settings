@@ -50,10 +50,10 @@
     //         <div class="panel-body"><p>{body} {source}</p></div>
     //       </div>
     //     </body>
-    "vale_info_template": "Packages/SubVale/static/info.html",
-    "vale_warning_template": "Packages/SubVale/static/warning.html",
-    "vale_error_template": "Packages/SubVale/static/error.html",
-    "vale_css": "Packages/SubVale/static/ui.css",
+    "vale_info_template": "Packages/Vale/static/info.html",
+    "vale_warning_template": "Packages/Vale/static/warning.html",
+    "vale_error_template": "Packages/Vale/static/error.html",
+    "vale_css": "Packages/Vale/static/ui.css",
 
     "vale_debug": false,
 }

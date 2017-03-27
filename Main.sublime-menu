@@ -10,67 +10,18 @@
                 "children":
                 [
                     {
-                        "caption": "SubVale",
+                        "caption": "Vale",
                         "children":
                         [
                             {
                                 "caption": "Settings – Default",
                                 "command": "open_file",
-                                "args": {"file": "${packages}/SubVale/SubVale.sublime-settings"}
+                                "args": {"file": "${packages}/Vale/Vale.sublime-settings"}
                             },
                             {
                                 "caption": "Settings – User",
                                 "command": "open_file",
-                                "args": {"file": "${packages}/User/SubVale.sublime-settings"}
-                            },
-                            { "caption": "-" },
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/SubVale/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/SubVale/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/SubVale/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
-                                }
+                                "args": {"file": "${packages}/User/Vale.sublime-settings"}
                             },
                             { "caption": "-" },
                             {

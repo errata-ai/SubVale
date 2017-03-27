@@ -10,7 +10,7 @@ import sublime_plugin
 Settings = None
 
 
-def debug(message, prefix='SubVale', level='debug'):
+def debug(message, prefix='Vale', level='debug'):
     """Print a formatted console entry to the Sublime Text console.
 
     Args:
@@ -72,7 +72,7 @@ def run_on_temp(cmd, content, filename):
 class ValeSettings(object):
     """Provide global access to and management of Vale's settings.
     """
-    settings_file = 'SubVale.sublime-settings'
+    settings_file = 'Vale.sublime-settings'
     settings = sublime.load_settings(settings_file)
 
     def __init__(self):
