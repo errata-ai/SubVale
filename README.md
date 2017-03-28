@@ -1,3 +1,5 @@
+# Vale + Sublime Text
+
 A **Sublime Text 3** (build 3080+) package for [Vale][Vale-home], the customizable linter for prose.
 
 ### Interactive Linting
