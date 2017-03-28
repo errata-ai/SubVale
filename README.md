@@ -23,7 +23,7 @@ Easily access styles defined in your Vale configuration file on a per-view basis
 
 ## Usage
 
-The first step is to specify the location of the Vale binary in your settings file (`Preferences → Package Settings → SubVale → Settings - User`).
+The first step is to specify the location of the Vale binary in your settings file (`Preferences → Package Settings → Vale → Settings - User`).
 
 This package defines three commands: 
 
@@ -41,7 +41,7 @@ See the Default settings file (`Preferences → Package Settings → Vale → Se
 
 [Vale-home]: https://valelint.github.io/
 [Vale-install]: https://valelint.github.io/getting-started/
-[pck-ctrl]: http://wbond.net/sublime_packages/package_control "Sublime Package Control by wbond"
+[pck-ctrl]: https://packagecontrol.io/installation "Sublime Package Control by wbond"
 
 [preview-img]: https://cloud.githubusercontent.com/assets/8785025/23342357/b756e524-fc0d-11e6-8705-856c8a4c56f3.png
 [demo-gif]: https://i.gyazo.com/819d7793b4080d5b613836d06a89740e.gif
