@@ -1,7 +1,6 @@
 import json
 import os
 import subprocess
-import tempfile
 import webbrowser
 
 import sublime
@@ -51,22 +50,17 @@ def pipe_through_prog(cmd, path=None):
     return out.decode('utf-8'), err
 
 
-def run_on_temp(cmd, content, filename):
-    """Create a named temporary file and run Vale on it.
+def run_on_buf(cmd, content, filename):
+    """Pass the current buffer's content to Vale.
     """
+    _, ext = os.path.splitext(filename)
+    cmd.append('--ext={0}'.format(ext))
+    cmd.append(content)
+    output, error = pipe_through_prog(cmd, os.path.dirname(filename))
     try:
-        _, ext = os.path.splitext(filename)
-        with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as f:
-            f.write(content.encode('utf-8'))
-            f.flush()
-            cmd.append(f.name)
-            out, err = pipe_through_prog(cmd, os.path.dirname(filename))
-            try:
-                return json.loads(out), err
-            except ValueError as e:
-                return None, str(e)
-    finally:
-        os.remove(f.name)
+        return json.loads(output), error
+    except ValueError as e:
+        return None, str(e)
 
 
 class ValeSettings(object):
@@ -260,7 +254,7 @@ class ValeCommand(sublime_plugin.TextCommand):
         debug('running vale on {0}'.format(self.view.settings().get('syntax')))
         cmd = [Settings.get('vale_binary'), '--output=JSON']
         buf = self.view.substr(sublime.Region(0, self.view.size()))
-        output, error = run_on_temp(cmd, buf, path)
+        output, error = run_on_buf(cmd, buf, path)
         if error:
             debug(error)
             return
