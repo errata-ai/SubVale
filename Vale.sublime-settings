@@ -1,8 +1,8 @@
 {
     // This is the path to the vale binary. If it is in your path, it should
     // just work out-of-the-box. Otherwise, you can set the full path, which
-    // would look like this:
-    //    "binary": "/some/path/to/vale.exe"
+    // would look something like this:
+    //    "binary": "C:/Projects/Go/bin/vale"
     "vale_binary": "vale",
 
     // This controls how alerts are presented:
