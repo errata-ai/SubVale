@@ -35,7 +35,7 @@ def make_link(url, linkText='{url}'):
     return template.format(url=url)
 
 
-def pipe_through_prog(cmd, path=None):
+def pipe_through_prog(cmd, path=None, stdin=''):
     """Run the Vale binary with the given command.
     """
     startupinfo = None
@@ -46,7 +46,7 @@ def pipe_through_prog(cmd, path=None):
                          stderr=subprocess.PIPE,
                          stdin=subprocess.PIPE,
                          startupinfo=startupinfo)
-    out, err = p.communicate()
+    out, err = p.communicate(input=stdin.encode('utf-8'))
     return out.decode('utf-8'), err
 
 
@@ -55,8 +55,7 @@ def run_on_buf(cmd, content, filename):
     """
     _, ext = os.path.splitext(filename)
     cmd.append('--ext={0}'.format(ext))
-    cmd.append(content)
-    output, error = pipe_through_prog(cmd, os.path.dirname(filename))
+    output, error = pipe_through_prog(cmd, os.path.dirname(filename), content)
     try:
         return json.loads(output), error
     except ValueError as e:
