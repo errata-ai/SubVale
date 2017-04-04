@@ -14,7 +14,7 @@ Bring your style guide to life with detailed pop-ups or status bar messages.
 
 Easily access styles defined in your Vale configuration file on a per-view basis.
 
-## Installation (Pending Package Control approval)
+## Installation
 
 1. Install [Vale][Vale-install].
 2. Install [Package Control][pck-ctrl].
