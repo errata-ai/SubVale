@@ -1,0 +1,3 @@
+# Vale 1.0.1
+
+* Fixes a naming issue with the settings file.
