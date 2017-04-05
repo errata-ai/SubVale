@@ -25,15 +25,20 @@ Easily access styles defined in your Vale configuration file on a per-view basis
 
 ## Usage
 
-The first step is to specify the location of the Vale binary in your settings file (`Preferences → Package Settings → Vale → Settings - User`).
+The first step is to specify the location of the Vale binary in your settings file (`Preferences → Package Settings → Vale → Settings - User`):
 
-This package defines three commands: 
+```json
+// Enter your path here ...
+{
+    "vale_binary": "/usr/local/bin/vale",
+}
+```
 
-1. `vale`: runs the Vale binary on the active view.
-2. `vale_edit_styles`: shows a list of styles relevant to the active view.
-3. `vale_new_rule`: shows a list of extension points and opens the associated template.
+From here, you can run one of the following commands via the Command Palette:
 
-All three can be accessed through the Command Palette or assigned to a key binding.
+1. `Vale: Lint View`: runs the Vale binary on the active view.
+2. `Vale: Edit Styles`: shows a list of styles relevant to the active view.
+3. `Vale: New Rule`: shows a list of extension points and opens the associated template.
 
 ## Configuration
 
