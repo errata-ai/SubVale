@@ -67,6 +67,10 @@ class ValeSettings(object):
     """
     settings_file = 'Vale.sublime-settings'
     settings = sublime.load_settings(settings_file)
+    no_vale_err = ("vale executable not found.\n\n"
+                   "Install vale and/or update your system path. "
+                   "Make sure to restart Sublime after install.\n\n"
+                   "See https://valelint.github.io/getting-started/")
 
     def __init__(self):
         self.default_binary = 'vale'
@@ -350,3 +354,5 @@ def plugin_loaded():
     """
     global Settings
     Settings = ValeSettings()
+    if not Settings.vale_exists():
+        sublime.error_message(Settings.no_vale_err)
