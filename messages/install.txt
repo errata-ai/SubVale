@@ -1,0 +1,36 @@
+ __     __      _
+ \ \   / /__ _ | |  ___
+  \ \ / // _` || | / _ \
+   \ V /| (_| || ||  __/
+    \_/  \__,_||_| \___|
+
+
+Getting Started
+===========================================================================
+
+The first step is to specify the location of the Vale binary in your settings
+file (`Preferences → Package Settings → Vale → Settings - User`):
+
+```json
+// Enter your path here ...
+{
+    "vale_binary": "C:/Projects/Go/bin/vale.exe",
+}
+```
+
+From here, you can run one of the following commands via the Command Palette:
+
+1. `Vale: Lint View`: runs the Vale binary on the active view.
+2. `Vale: Edit Styles`: shows a list of styles relevant to the active view.
+3. `Vale: New Rule`: shows a list of extension points and opens the associated
+    template.
+
+Configuration
+===========================================================================
+
+This package exposes a number of configuration options. These include styling
+the in-text alerts, adding custom HTML/CSS for the pop-ups, and listing
+accepted syntaxes.
+
+See the Default settings file
+(`Preferences → Package Settings → Vale → Settings - Default`) for more details.

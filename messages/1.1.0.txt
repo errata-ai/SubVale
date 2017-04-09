@@ -1,0 +1,4 @@
+# Vale 1.1.0
+
+* We now support on-the-fly linting!
+* An error message will now appear on startup if vale isn't found
