@@ -1,5 +1,7 @@
 # Vale + Sublime Text
 
+> NOTE: This project has been deprecated in favor of [SublimeLinter-contrib-vale](https://packagecontrol.io/packages/SublimeLinter-contrib-vale). At the time of creating this plugin, I was unhappy with how SublimeLinter implemented a number of features&mdash;however, [v4.0.0](https://forum.sublimetext.com/t/sublimelinter-4-beta/34022) has since addressed these concerns.
+
 A **Sublime Text 3** (build 3080+) package for [Vale][Vale-home], the customizable linter for prose.
 
 ### Interactive Linting
