@@ -29,6 +29,10 @@ a {
   text-decoration: underline;
 }
 
+#actions {
+  padding-top: 5px;
+}
+
 .fg-background { color: var(--background); }
 .fg-foreground { color: var(--foreground); }
 .fg-redish     { color: var(--redish);     }
@@ -49,6 +53,8 @@ a {
 
 .panel-header {
   background-color: var(--panel-header-bg);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
   font-weight: 600;
   font-size: 1.1rem;
   padding: var(--section-padding);
@@ -56,6 +62,8 @@ a {
 
 .panel-body {
   background-color: var(--panel-body-bg);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
   color: var(--background);
   padding: var(--content-padding);
 }

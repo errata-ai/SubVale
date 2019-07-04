@@ -1,0 +1,12 @@
+# Vale 2.0.0
+
+The focus of this package is now supporting Vale's desktop application,
+Vale Server (https://errata.ai/vale-server/). This allows for better
+integration with Vale and its resources than we could achieve through
+the CLI alone. Some of the new features include support for the Vale Dashboard
+and project-based configuration.
+
+If you'd like to continue using Sublime Text with the Vale command-line
+tool, you can do so by installing the SublimeLinter package:
+
+https://packagecontrol.io/packages/SublimeLinter-contrib-vale

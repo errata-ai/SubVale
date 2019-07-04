@@ -27,17 +27,17 @@
                             {
                                 "caption": "Homepage",
                                 "command": "open_url",
-                                "args": {"url": "https://github.com/ValeLint/vale"}
+                                "args": {"url": "https://errata.ai/vale-server/"}
                             },
                             {
                                 "caption": "Documentation",
                                 "command": "open_url",
-                                "args": {"url": "https://valelint.github.io/"}
+                                "args": {"url": "https://errata-ai.github.io/vale-server/docs/about"}
                             },
                             {
                                 "caption": "Issues",
                                 "command": "open_url",
-                                "args": {"url": "https://github.com/ValeLint/SubVale/issues"}
+                                "args": {"url": "https://github.com/errata-ai/vale-server/issues"}
                             }
                         ]
                     }

@@ -1,9 +1,8 @@
 {
-    // This is the path to the vale binary. If it is in your path, it should
-    // just work out-of-the-box. Otherwise, you can set the full path, which
-    // would look something like this:
-    //    "binary": "C:/Projects/Go/bin/vale.exe"
-    "vale_binary": "vale",
+    // This is the URL to your local Vale Server instance.
+    //
+    // See https://github.com/errata-ai/vale-server/ for more information.
+    "vale_server": "http://127.0.0.1:7777/",
 
     // This controls how alerts are presented:
     //   1. "hover_status_bar": on hover, show an alert's severity and message
@@ -35,12 +34,11 @@
     // A list of syntaxes to run Vale on.
     "vale_syntaxes": [
         "HTML", "Markdown", "Plain Text", "Markdown GFM", "reStructuredText",
-        "reStructuredText Improved", "Asciidoc", "Asciidoc (AsciiDoctor)",
-        "LaTeX"
+        "reStructuredText Improved", "Asciidoc", "Asciidoc (AsciiDoctor)"
     ],
 
     // If alert_location is set to hover_popup, how wide should the popup be?
-    "vale_popup_width": 450,
+    "vale_popup_width": 600,
 
     // Styling -- HTML should follow this basic structure:
     //     <body id="vale-ui">

@@ -1,8 +1,6 @@
-# Vale + Sublime Text
+# Vale Server + Sublime Text
 
-> NOTE: This project has been deprecated in favor of [SublimeLinter-contrib-vale](https://packagecontrol.io/packages/SublimeLinter-contrib-vale). At the time of creating this plugin, I was unhappy with how SublimeLinter implemented a number of features&mdash;however, [v4.0.0](https://forum.sublimetext.com/t/sublimelinter-4-beta/34022) has since addressed these concerns.
-
-A **Sublime Text 3** (build 3080+) package for [Vale][Vale-home], the customizable linter for prose.
+A **Sublime Text 3** (build 3080+) package for [Vale Server][Vale-home], a customizable linter for prose.
 
 ### Interactive Linting
 
@@ -18,7 +16,7 @@ Easily access styles defined in your Vale configuration file on a per-view basis
 
 ## Installation
 
-1. Install [Vale][Vale-install].
+1. Install [Vale Server][Vale-install].
 2. Install [Package Control][pck-ctrl].
 3. Bring up the Command Palette
    (<kbd>Command-Shift-P</kbd> on macOS and <kbd>Ctrl-Shift-P</kbd> on Linux/Windows).
@@ -27,20 +25,11 @@ Easily access styles defined in your Vale configuration file on a per-view basis
 
 ## Usage
 
-The first step is to specify the location of the Vale binary in your settings file (`Preferences → Package Settings → Vale → Settings - User`):
+You can run one of the following commands via the Command Palette:
 
-```json
-// Enter your path here ...
-{
-    "vale_binary": "/usr/local/bin/vale",
-}
-```
-
-From here, you can run one of the following commands via the Command Palette:
-
-1. `Vale: Lint View`: runs the Vale binary on the active view.
-2. `Vale: Edit Styles`: shows a list of styles relevant to the active view.
-3. `Vale: New Rule`: shows a list of extension points and opens the associated template.
+1. `Vale Server: Lint View`: runs Vale Server on the active view.
+2. `Vale Server: Edit Styles`: shows a list of styles relevant to the active view.
+3. `Vale Server: Open Dashboard`: opens the Vale Server dashboard in your default browser.
 
 ## Configuration
 
@@ -48,8 +37,8 @@ This package exposes a number of [configuration options](https://github.com/jdka
 
 See the Default settings file (`Preferences → Package Settings → Vale → Settings - Default`) for more details.
 
-[Vale-home]: https://valelint.github.io/
-[Vale-install]: https://valelint.github.io/getting-started/
+[Vale-home]: https://errata.ai/vale-server/
+[Vale-install]: https://errata-ai.github.io/vale-server/docs/install
 [pck-ctrl]: https://packagecontrol.io/installation "Sublime Package Control by wbond"
 
 [preview-img]: https://cloud.githubusercontent.com/assets/8785025/23342357/b756e524-fc0d-11e6-8705-856c8a4c56f3.png

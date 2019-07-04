@@ -1,5 +1,5 @@
 [
-    { "caption": "Vale: Lint View", "command": "vale"},
-    { "caption": "Vale: Edit Styles", "command": "vale_edit_styles"},
-    { "caption": "Vale: New Rule", "command": "vale_new_rule"}
+    { "caption": "Vale Server: Lint View", "command": "vale"},
+    { "caption": "Vale Server: Edit Styles", "command": "vale_edit_styles"},
+    { "caption": "Vale Server: Open Dashboard", "command": "vale_dashboard"}
 ]
