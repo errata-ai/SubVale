@@ -41,5 +41,5 @@ See the Default settings file (`Preferences → Package Settings → Vale → Se
 [Vale-install]: https://errata-ai.github.io/vale-server/docs/install
 [pck-ctrl]: https://packagecontrol.io/installation "Sublime Package Control by wbond"
 
-[preview-img]: https://cloud.githubusercontent.com/assets/8785025/23342357/b756e524-fc0d-11e6-8705-856c8a4c56f3.png
+[preview-img]: https://user-images.githubusercontent.com/8785025/60686241-734b3800-9e5c-11e9-85f0-cf2899b2fb26.gif
 [demo-gif]: https://i.gyazo.com/819d7793b4080d5b613836d06a89740e.gif
