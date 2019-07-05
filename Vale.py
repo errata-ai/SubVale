@@ -45,7 +45,7 @@ def query(endpoint, payload={}):
     """Query the Vale Server API with the given `endpoint` and `payload`.
     """
     try:
-        server = urllib.parse.urljoin(Settings.get("server"), endpoint)
+        server = urllib.parse.urljoin(Settings.get("vale_server"), endpoint)
         r = requests.get(server, data=payload)
         return r.json() if r.status_code == 200 else {}
     except requests.exceptions.RequestException as e:
@@ -226,7 +226,7 @@ class ValeCommand(sublime_plugin.TextCommand):
         buf = self.view.substr(sublime.Region(0, self.view.size()))
 
         try:
-            server = urllib.parse.urljoin(Settings.get("server"), "vale")
+            server = urllib.parse.urljoin(Settings.get("vale_server"), "vale")
             debug("running vale ({0}) on {1}".format(
                 server,
                 self.view.settings().get("syntax")
