@@ -1,0 +1,2 @@
+
+* Fix incorrect setting name ('server' -> 'vale_server')
