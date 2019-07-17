@@ -231,7 +231,11 @@ class ValeCommand(sublime_plugin.TextCommand):
                 server,
                 self.view.settings().get("syntax")
             ))
-            r = requests.post(server, data={"format": ext, "text": buf})
+            r = requests.post(server, data={
+                "format": ext,
+                "text": buf,
+                "path": os.path.dirname(path)
+            })
             if r.status_code != 200:
                 debug(r.content)
                 return
