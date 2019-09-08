@@ -103,8 +103,6 @@ def handle_navigation(path):
             "alert": alert
         })
 
-        print("HEY", r.text)
-
         show_suggestions(r.json().get("suggestions", []), alert)
 
 
@@ -350,7 +348,6 @@ class ValeCommand(sublime_plugin.TextCommand):
             os.path.join(path, style, rule) + ".yml", "Edit rule"
         ))
         if "Action" in alert and alert["Action"]["Name"] != "":
-            debug(alert)
             stringify = json.dumps(alert, separators=(",", ":")).strip()
             stringify = binascii.hexlify(stringify.encode()).decode()
             actions.append(make_link(stringify, "Fix Alert"))
