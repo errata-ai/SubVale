@@ -1,3 +1,4 @@
+import binascii
 import json
 import os
 import subprocess
@@ -10,6 +11,28 @@ import sublime
 import sublime_plugin
 
 Settings = None
+
+
+class ValeFixCommand(sublime_plugin.TextCommand):
+    """Applies a fix for an alert.
+    """
+
+    def run(self, edit, **args):
+        alert, suggestion = args["alert"], args["suggestion"]
+
+        offset = self.view.text_point(alert["Line"] - 1, 0)
+        coords = sublime.Region(
+            offset + alert["Span"][0] - 1, offset + alert["Span"][1]
+        )
+
+        if alert["Action"]["Name"] != "remove":
+            self.view.replace(edit, coords, suggestion)
+        else:
+            coords.b = coords.b + 1
+            self.view.erase(edit, coords)
+
+        self.view.window().status_message(
+            "[Vale Server] Successfully applied fix!")
 
 
 def debug(message, prefix="Vale", level="debug"):
@@ -31,15 +54,59 @@ def debug(message, prefix="Vale", level="debug"):
         )
 
 
+def show_suggestions(suggestions, payload):
+    """Show a Quick Panel of possible solutions for the given alert.
+    """
+    alert = json.loads(payload)
+
+    options = []
+    for suggestion in suggestions:
+        if alert["Action"]["Name"] == "remove":
+            options.append("Remove '" + alert["Match"] + "'")
+        else:
+            options.append("Replace with '" + suggestion + "'")
+
+    sublime.active_window().show_quick_panel(
+        options,
+        lambda idx: apply_suggestion(alert, suggestions, idx),
+        sublime.MONOSPACE_FONT
+    )
+
+
+def apply_suggestion(alert, suggestions, idx):
+    """Apply the given suggestion to the active buffer.
+    """
+    if idx < len(suggestions):
+        suggestion = suggestions[idx]
+
+        view = sublime.active_window().active_view()
+        view.run_command("vale_fix", {
+            "alert": alert, "suggestion": suggestion
+        })
+
+
 def handle_navigation(path):
     """Handle navigation after a user clicks one of our links.
     """
     if os.path.exists(path):
         # The path exists, open it in a new tab.
         sublime.active_window().open_file(path)
-    else:
+    elif path.startswith("http"):
         # The path doesn't exist, assume it's an URL.
         webbrowser.open(path)
+    else:
+        # It's an alert to process.
+        server = urllib.parse.urljoin(Settings.get("vale_server"), "suggest")
+
+        alert = binascii.unhexlify(path.encode()).decode()
+        r = requests.post(server, data={
+            "alert": alert
+        })
+
+        print("HEY", r.text)
+
+        show_suggestions(r.json().get("suggestions", []), alert)
+
 
 def query(endpoint, payload={}):
     """Query the Vale Server API with the given `endpoint` and `payload`.
@@ -237,7 +304,6 @@ class ValeCommand(sublime_plugin.TextCommand):
                 "path": os.path.dirname(path)
             })
             if r.status_code != 200:
-                debug(r.content)
                 return
         except requests.exceptions.RequestException as e:
             debug(e)
@@ -283,13 +349,11 @@ class ValeCommand(sublime_plugin.TextCommand):
         actions.append(make_link(
             os.path.join(path, style, rule) + ".yml", "Edit rule"
         ))
-
-        meta = os.path.join(path, style, "meta.json")
-        if os.path.exists(meta):
-            with open(meta) as f:
-                d = json.load(f)
-            if d.get("issues"):
-                actions.append(make_link(d.get("issues"), "Report bug"))
+        if "Action" in alert and alert["Action"]["Name"] != "":
+            debug(alert)
+            stringify = json.dumps(alert, separators=(",", ":")).strip()
+            stringify = binascii.hexlify(stringify.encode()).decode()
+            actions.append(make_link(stringify, "Fix Alert"))
 
         level = alert["Severity"].capitalize()
         if level == "Error":
