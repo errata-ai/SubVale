@@ -76,7 +76,7 @@ def show_suggestions(suggestions, payload):
 def apply_suggestion(alert, suggestions, idx):
     """Apply the given suggestion to the active buffer.
     """
-    if idx < len(suggestions):
+    if idx >= 0 and idx < len(suggestions):
         suggestion = suggestions[idx]
 
         view = sublime.active_window().active_view()
