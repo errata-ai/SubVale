@@ -1,0 +1,2 @@
+
+* Fixed crash related to Rule actions
