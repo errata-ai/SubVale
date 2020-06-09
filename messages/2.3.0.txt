@@ -1,0 +1,6 @@
+# v2.3.0
+
+The plugin will now color its in-editor elements based on the severity
+level of a given alert.
+
+See https://github.com/errata-ai/SubVale/issues/3 for more information.
