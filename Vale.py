@@ -363,9 +363,10 @@ class ValeCommand(sublime_plugin.TextCommand):
         style, rule = alert["Check"].split(".")
         path = query("path")["path"]
 
-        actions.append(make_link(
-            os.path.join(path, style, rule) + ".yml", "Edit rule"
-        ))
+        loc = os.path.join(path, style, rule) + ".yml"
+        if os.path.exists(loc):
+            actions.append(make_link(loc, "Edit rule"))
+
         if "Action" in alert and alert["Action"]["Name"] != "":
             stringify = json.dumps(alert, separators=(",", ":")).strip()
             stringify = binascii.hexlify(stringify.encode()).decode()
