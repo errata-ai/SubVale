@@ -134,10 +134,12 @@ class ValeSettings(object):
 
     def __init__(self):
         self.on_hover = []
+
         self.error_template = None
         self.warning_template = None
         self.info_template = None
         self.css = None
+
         self.settings.add_on_change("reload", lambda: self.load())
         self.load()
 
@@ -203,7 +205,10 @@ class ValeSettings(object):
         """Clear Vale's regions and hover data.
         """
         for alert in self.on_hover:
-            sublime.View(alert["view_id"]).erase_regions("Vale Alerts")
+            for level in ["error", "warning", "suggestion"]:
+                sublime.View(alert["view_id"]).erase_regions(
+                    "vale-server-" + level
+                )
         del self.on_hover[:]
 
     def __load_resources(self):
@@ -301,6 +306,8 @@ class ValeCommand(sublime_plugin.TextCommand):
                 "text": buf,
                 "path": os.path.dirname(path)
             })
+            debug(r.status_code)
+            debug(r.text)
             if r.status_code != 200:
                 return
         except requests.exceptions.RequestException as e:
@@ -313,28 +320,40 @@ class ValeCommand(sublime_plugin.TextCommand):
         """Add alert regions to the view.
         """
         Settings.clear_on_hover()
-        regions = []
+
+        regions = {"suggestion": [], "warning": [], "error": []}
+        level_to_scope = {
+            "error": "region.redish",
+            "warning": "region.orangish",
+            "suggestion": "region.bluish"
+        }
+
         for f, alerts in data.items():
             for a in alerts:
                 start = self.view.text_point(a["Line"] - 1, 0)
                 loc = (start + a["Span"][0] - 1, start + a["Span"][1])
-                regions.append(sublime.Region(*loc))
+
+                region = sublime.Region(*loc)
+
+                regions[a["Severity"]].append(region)
                 Settings.on_hover.append(
                     {
-                        "region": regions[-1],
+                        "region": region,
                         "HTML": self._make_content(a),
                         "view_id": self.view.id(),
                         "level": a["Severity"],
                         "msg": a["Message"],
                     }
                 )
-        self.view.add_regions(
-            "Vale Alerts",
-            regions,
-            Settings.get("vale_highlight_scope"),
-            Settings.get("vale_icon"),
-            Settings.get_draw_style(),
-        )
+
+        for level in ["error", "warning", "suggestion"]:
+            self.view.add_regions(
+                "vale-server-" + level,
+                regions[level],
+                level_to_scope[level],
+                "circle",
+                Settings.get_draw_style(),
+            )
 
     def _make_content(self, alert):
         """Convert an alert into HTML suitable for a popup.

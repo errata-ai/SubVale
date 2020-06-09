@@ -18,12 +18,6 @@
     //   4. "outlined": draw an underline around the regions.
     "vale_alert_style": "outlined",
 
-    // Scope used to determine the color of `alert_style`.
-    "vale_highlight_scope": "invalid",
-
-    // The path to an icon that will be drawn in the gutter next to each alert.
-    "vale_icon": "",
-
     // Lint mode:
     //   1. "background": whenever text is modified.
     //   2. "load_and_save": only when a file is loaded or saved.
