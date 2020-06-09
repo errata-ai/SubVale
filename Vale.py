@@ -306,8 +306,6 @@ class ValeCommand(sublime_plugin.TextCommand):
                 "text": buf,
                 "path": os.path.dirname(path)
             })
-            debug(r.status_code)
-            debug(r.text)
             if r.status_code != 200:
                 return
         except requests.exceptions.RequestException as e:
