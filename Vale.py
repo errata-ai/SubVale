@@ -273,13 +273,27 @@ class ValeSettings(object):
 
 class ValeDashboardCommand(sublime_plugin.WindowCommand):
     """Opens the Vale Server dashboard.
-
-    TODO: Get port from application?
     """
 
     def run(self):
         instance = Settings.get("vale_server")
         webbrowser.open(instance)
+
+
+class ValeVocabCommand(sublime_plugin.WindowCommand):
+    """Opens the user-specified vocab file.
+    """
+
+    def run(self, name):
+        config = Settings.get_config()
+
+        src = os.path.join(
+            config["StylesPath"],
+            "Vocab",
+            config["Project"],
+            name + ".txt")
+
+        sublime.active_window().open_file(src)
 
 
 class ValeEditStylesCommand(sublime_plugin.WindowCommand):
