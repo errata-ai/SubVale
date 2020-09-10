@@ -378,7 +378,7 @@ class ValeCommand(sublime_plugin.TextCommand):
         syntax = self.view.settings().get("syntax")
         return Settings.is_supported(syntax)
 
-    def run(self, edit):
+    def run(self, edit, from_load):
         """Run vale on the user-indicated buffer.
         """
         path = self.view.file_name()
@@ -390,6 +390,8 @@ class ValeCommand(sublime_plugin.TextCommand):
         count = self.view.rowcol(self.view.size())[0] + 1
 
         if limit < 0 or (limit > 0 and count >= limit):
+            if from_load:
+                return
             _, ext = os.path.splitext(path)
 
             reg = expand_to_paragraph(self.view, self.view.sel()[0].b)
@@ -496,17 +498,17 @@ class ValeEventListener(sublime_plugin.EventListener):
         Settings.clear_on_hover()
         if Settings.get("vale_mode") == "background":
             debug("running vale on modified")
-            view.run_command("vale")
+            view.run_command("vale", {"from_load": False})
 
-    def on_activated_async(self, view):
+    def on_load_async(self, view):
         if Settings.get("vale_mode") == "load_and_save":
             debug("running vale on activated")
-            view.run_command("vale")
+            view.run_command("vale", {"from_load": True})
 
     def on_pre_save_async(self, view):
         if Settings.get("vale_mode") in ("load_and_save", "save"):
             debug("running vale on pre save")
-            view.run_command("vale")
+            view.run_command("vale", {"from_load": False})
 
     def on_hover(self, view, point, hover_zone):
         loc = Settings.get("vale_alert_location")
