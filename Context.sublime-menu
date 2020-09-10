@@ -1,0 +1,11 @@
+[
+    { "caption": "-", "id": "selection" },
+    {
+        "caption": "Vale Server: Add word to Vocab (accept)",
+        "command": "vale_vocab_edit", "args": {"name": "accept"}
+    },
+    {
+        "caption": "Vale Server: Add word to Vocab (reject)",
+        "command": "vale_vocab_edit", "args": {"name": "reject"}
+    },
+]

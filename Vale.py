@@ -113,7 +113,7 @@ def query(endpoint, payload={}):
     """
     try:
         server = urllib.parse.urljoin(Settings.get("vale_server"), endpoint)
-        r = requests.get(server, data=payload)
+        r = requests.get(server, params=payload)
         return r.json() if r.status_code == 200 else {}
     except requests.exceptions.RequestException as e:
         debug(str(e), level="error")
@@ -294,6 +294,40 @@ class ValeVocabCommand(sublime_plugin.WindowCommand):
             name + ".txt")
 
         sublime.active_window().open_file(src)
+
+
+class ValeVocabEditCommand(sublime_plugin.WindowCommand):
+    """Adds the user-selected term to the given file.
+    """
+
+    def run(self, name):
+        sel = self.window.active_view().sel()
+
+        reg = sublime.Region(sel[0].a, sel[0].b)
+        if reg.size() == 0:
+            reg = self.window.active_view().word(reg)
+        term = self.window.active_view().substr(reg)
+
+        config = Settings.get_config()
+
+        project = config["Project"]
+        words = query("vocab", {
+            "name": project, "file": name
+        })
+
+        words.append(term)
+        sorted_list = sorted(set(words), key=str.casefold)
+
+        server = urllib.parse.urljoin(Settings.get("vale_server"), "update")
+        r = requests.post(server, data={
+            "path": project + "." + name,
+            "text": "\n".join(sorted_list)
+        })
+
+        if r.status_code == 200:
+            self.window.status_message(
+                "Successfully added '{0}' to '{1}' vocab.".format(term, project)
+            )
 
 
 class ValeEditStylesCommand(sublime_plugin.WindowCommand):
