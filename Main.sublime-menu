@@ -32,7 +32,7 @@
                             {
                                 "caption": "Documentation",
                                 "command": "open_url",
-                                "args": {"url": "https://errata-ai.github.io/vale-server/docs/about"}
+                                "args": {"url": "https://docs.errata.ai/vale-server/install"}
                             },
                             {
                                 "caption": "Issues",
