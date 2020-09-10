@@ -25,6 +25,8 @@
     //   4. "manual": only when requested.
     "vale_mode": "load_and_save",
 
+    "vale_threshold": 0,
+
     // If alert_location is set to hover_popup, how wide should the popup be?
     "vale_popup_width": 600,
 

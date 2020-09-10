@@ -10,6 +10,8 @@ import requests
 import sublime
 import sublime_plugin
 
+from Default.paragraph import expand_to_paragraph
+
 Settings = None
 
 
@@ -123,6 +125,50 @@ def make_link(url, linkText="{url}"):
     """
     template = "<a href=\"{url}\">" + linkText + "</a>"
     return template.format(url=url)
+
+
+def post_file(path):
+    """
+    """
+    try:
+        server = urllib.parse.urljoin(Settings.get("vale_server"), "file")
+        debug("running vale ({0}) on {1}".format(server, path))
+
+        r = requests.post(server, data={
+            "file": path,
+            "path": os.path.dirname(path)
+        })
+
+        if r.status_code != 200:
+            return {}
+
+        body = r.json()["path"]
+        with open(body, "r+", encoding="utf-8") as f:
+            return json.load(f)
+
+    except requests.exceptions.RequestException as e:
+        debug(e)
+        return {}
+
+
+def post_str(buf, ext):
+    """
+    """
+    try:
+        server = urllib.parse.urljoin(Settings.get("vale_server"), "vale")
+        debug("running vale ({0}) on {1}".format(server, buf))
+
+        r = requests.post(server, data={
+            "text": buf,
+            "format": ext
+        })
+
+        if r.status_code != 200:
+            return {}
+        return r.json()
+    except requests.exceptions.RequestException as e:
+        debug(e)
+        return {}
 
 
 class ValeSettings(object):
@@ -292,29 +338,23 @@ class ValeCommand(sublime_plugin.TextCommand):
             debug("invalid path: {0}!".format(path))
             return
 
-        _, ext = os.path.splitext(path)
-        buf = self.view.substr(sublime.Region(0, self.view.size()))
+        limit = Settings.get("vale_threshold")
+        count = self.view.rowcol(self.view.size())[0] + 1
 
-        try:
-            server = urllib.parse.urljoin(Settings.get("vale_server"), "vale")
-            debug("running vale ({0}) on {1}".format(
-                server,
-                self.view.settings().get("syntax")
-            ))
-            r = requests.post(server, data={
-                "format": ext,
-                "text": buf,
-                "path": os.path.dirname(path)
-            })
-            if r.status_code != 200:
-                return
-        except requests.exceptions.RequestException as e:
-            debug(e)
-            return
+        if limit < 0 or (limit > 0 and count >= limit):
+            _, ext = os.path.splitext(path)
 
-        self.show_alerts(r.json())
+            reg = expand_to_paragraph(self.view, self.view.sel()[0].b)
+            buf = self.view.substr(reg)
+            row, _ = self.view.rowcol(reg.a)
 
-    def show_alerts(self, data):
+            response = post_str(buf, ext)
+            self.show_alerts(response, row)
+        else:
+            response = post_file(path)
+            self.show_alerts(response, 0)
+
+    def show_alerts(self, data, offset):
         """Add alert regions to the view.
         """
         Settings.clear_on_hover()
@@ -328,7 +368,7 @@ class ValeCommand(sublime_plugin.TextCommand):
 
         for f, alerts in data.items():
             for a in alerts:
-                start = self.view.text_point(a["Line"] - 1, 0)
+                start = self.view.text_point((a["Line"] - 1) + offset, 0)
                 loc = (start + a["Span"][0] - 1, start + a["Span"][1])
 
                 region = sublime.Region(*loc)
