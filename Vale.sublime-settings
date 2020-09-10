@@ -25,6 +25,11 @@
     //   4. "manual": only when requested.
     "vale_mode": "load_and_save",
 
+    // Only lint the active portion of a document
+    // (as determined by the cursor position), allowing for efficient
+    // on-the-fly linting of large documents. There are three supported
+    // values: -1 (applies to all files), 0 (disabled), n (applies to
+    // any file with lines >= n).
     "vale_threshold": 0,
 
     // If alert_location is set to hover_popup, how wide should the popup be?
