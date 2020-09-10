@@ -232,7 +232,8 @@ class ValeDashboardCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        webbrowser.open("http://localhost:7777")
+        instance = Settings.get("vale_server")
+        webbrowser.open(instance)
 
 
 class ValeEditStylesCommand(sublime_plugin.WindowCommand):
