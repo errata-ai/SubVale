@@ -152,8 +152,7 @@ class ValeSettings(object):
     def is_supported(self, syntax):
         """Determine if `syntax` has been specified in the settings.
         """
-        supported = self.get("vale_syntaxes")
-        return any(s.lower() in syntax.lower() for s in supported)
+        return True
 
     def get_styles(self):
         """Get Vale's base styles.
