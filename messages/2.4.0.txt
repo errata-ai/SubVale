@@ -1,0 +1,12 @@
+# v2.4.0
+
+This release introduces three new features:
+
+* vale_threshold: Which allows you to enabled linting of only the
+  active paragraph for large files. See the default settings
+  (Preferences -> Package Settings -> Vale -> Settings - Default) for
+  more information.
+
+* The ability to navigate to vocab files from the Command Palette.
+
+* The ability to add terms to ignore files through the context menu.
