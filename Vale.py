@@ -1,4 +1,5 @@
 import binascii
+import cgi
 import json
 import os
 import subprocess
@@ -462,24 +463,25 @@ class ValeCommand(sublime_plugin.TextCommand):
 
         level = alert["Severity"].capitalize()
         if level == "Error":
-            html = Settings.error_template
+            template = Settings.error_template
         elif level == "Warning":
-            html = Settings.warning_template
+            template = Settings.warning_template
         else:
-            html = Settings.info_template
+            template = Settings.info_template
 
         source = alert["Link"]
         if source != "":
             actions.append(make_link(source, "Read more"))
 
+        message = cgi.escape(alert["Message"])
         if alert["Description"] == "":
             title = "{} - {}".format(level, alert["Check"])
-            body = alert["Message"]
+            body = message
         else:
-            title = "{}: {}".format(level, alert["Message"])
+            title = "{}: {}".format(level, message)
             body = alert["Description"]
 
-        return html.format(
+        return template.format(
             CSS=Settings.css,
             header=title,
             body=body,
