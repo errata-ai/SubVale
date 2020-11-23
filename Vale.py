@@ -417,6 +417,16 @@ class ValeCommand(sublime_plugin.TextCommand):
             "suggestion": "region.bluish"
         }
 
+        if "Code" in data and "Text" in data:
+            sublime.status_message(
+                "Vale: runtime error (skipping lint)")
+
+            debug(data["Text"])
+            debug(data.get("Path", ""))
+
+            return
+
+
         for f, alerts in data.items():
             for a in alerts:
                 start = self.view.text_point((a["Line"] - 1) + offset, 0)
