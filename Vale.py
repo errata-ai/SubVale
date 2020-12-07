@@ -281,6 +281,24 @@ class ValeDashboardCommand(sublime_plugin.WindowCommand):
         webbrowser.open(instance)
 
 
+class ValeReportCommand(sublime_plugin.WindowCommand):
+    """Generates a report for the active folder.
+    """
+
+    def run(self):
+        instance = Settings.get("vale_server")
+
+        wind = sublime.active_window()
+        name = os.path.dirname(wind.active_view().file_name())
+
+        server = urllib.parse.urljoin(
+            instance,
+            "/summary.html?path={0}".format(name)
+        )
+
+        webbrowser.open(server)
+
+
 class ValeVocabCommand(sublime_plugin.WindowCommand):
     """Opens the user-specified vocab file.
     """

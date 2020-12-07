@@ -2,6 +2,7 @@
     { "caption": "Vale Server: Lint View", "command": "vale", "args": {"from_load": false}},
     { "caption": "Vale Server: Edit Styles", "command": "vale_edit_styles"},
     { "caption": "Vale Server: Open Dashboard", "command": "vale_dashboard"},
+    { "caption": "Vale Server: Show Report", "command": "vale_report"},
     { "caption": "Vale Server: Open Vocab File (accept)", "command": "vale_vocab", "args": {"name": "accept"}},
     { "caption": "Vale Server: Open Vocab File (reject)", "command": "vale_vocab", "args": {"name": "reject"}}
 ]
